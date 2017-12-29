@@ -1,8 +1,8 @@
 {
-  "name": "NodeJS Todo",
+  "name": "NodeJS_Todo",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "Name here",
+  "description": "VueJS front end for a Todo web app",
+  "author": "",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.17.1",
     "bulma": "^0.6.0",
+    "express": "^4.16.2",
     "font-awesome": "^4.7.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",
@@ -43,7 +44,6 @@
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-import": "^2.7.0",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.14.1",
     "extract-text-webpack-plugin": "^3.0.0",
     "file-loader": "^1.1.4",
     "friendly-errors-webpack-plugin": "^1.6.1",
