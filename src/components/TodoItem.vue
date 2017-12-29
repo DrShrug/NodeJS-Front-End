@@ -1,6 +1,7 @@
 <template>
-  <div class="box">
+  <div class="box" :class="{ 'is-hidden' : checkConditionsToHide }">
     <div class="columns">
+
       <div class="column is-2">
         <span class="icon is-pulled-left">
           <i class="fa fa-bars" aria-hidden="true"></i>
@@ -17,6 +18,7 @@
           <input type="checkbox" v-model="todoObj.completed" @change="changeCompletionStatus">
         </label>
       </div>
+
     </div>
   </div>
   
@@ -30,6 +32,7 @@ import axios from 'axios';
 export default {
   props: [
     'todoObj',
+    'wantCompletedFiltered',
   ],
   data() {
     return {
@@ -38,6 +41,11 @@ export default {
       editMode: false,
       taskText: this.todoObj.task,
     };
+  },
+  computed: {
+    checkConditionsToHide() {
+      return (this.wantCompletedFiltered && this.completed);
+    },
   },
   methods: {
     changeCompletionStatus() {
@@ -51,6 +59,7 @@ export default {
         },
       }).then((res) => {
         if (res.status === 200) {
+          this.completed = !this.completed;
           this.$parent.$parent.updateDBPopup('Task has been completed', 'is-success');
         } else {
           this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
@@ -66,6 +75,7 @@ export default {
         contentType: 'application/json; charset=utf-8',
         data: {
           task: this.taskText,
+          completed: this.completed,
         },
       }).then((res) => {
         this.editMode = false;

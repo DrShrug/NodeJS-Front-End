@@ -1,6 +1,40 @@
 <template>
   <div>
-    <TodoItem v-for="todo in todos" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+    <!-- Adding a new todo -->
+    <div class="modal" :class="{ 'is-active' : modalIsActive}">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Add a new todo</p>
+          <button class="delete" aria-label="close" @click="modalIsActive = false"></button>
+        </header>
+        <section class="modal-card-body">
+          <label class="label">Task to complete</label>
+          <input v-model="taskToAdd" class="input" type="text" placeholder="Task">
+        </section>
+        <footer class="modal-card-foot">
+          <button class="button is-success" @click="addNewTodo">Add</button>
+          <button class="button" @click="modalIsActive = false">Cancel</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Small menu -->
+    <div class="box top-rounded-border">
+      <div class="field is-grouped">
+        <p class="control is-expanded">
+          <a class="button is-primary" @click="modalIsActive = true">Add new todo</a>
+        </p>
+        <p class="control">
+          <a class="button noborder">
+            <a class="has-text-centered" @click="completedHidden = !completedHidden">Toggle completed todo visibility</a>
+          </a>
+        </p>
+      </div>
+    </div>
+    
+    <!-- Todos -->
+    <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
   </div>
 </template>
 
@@ -13,6 +47,9 @@ export default {
     return {
       todos: [],
       baseTodoURL: 'https://nodejs-vue-js-todo.herokuapp.com/todos',
+      modalIsActive: false,
+      taskToAdd: '',
+      completedHidden: false,
     };
   },
   components: {
@@ -30,7 +67,31 @@ export default {
         }
       });
     },
+
+    addNewTodo() {
+      this.modalIsActive = false;
+      axios({
+        method: 'POST',
+        url: this.baseTodoURL,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: {
+          task: this.taskToAdd,
+        },
+      }).then(() => {
+        this.getAllTodos();
+      });
+    },
   },
 };
 </script>
+<style>
+.top-rounded-border {
+  border-radius: 10px 10px 0 0
+}
 
+.noborder {
+  border: none;
+}
+</style>
+ 
