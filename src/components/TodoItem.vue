@@ -7,8 +7,9 @@
         </span>
       </div>
 
-      <div class="column is-8">
-        {{ todoObj.task }}
+      <div class="column is-8" @click="editMode = true">
+        <p v-if="!editMode">{{ taskText }}</p>
+        <input type="text" class="input" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
       </div>
 
       <div class="column is-2">
@@ -32,14 +33,17 @@ export default {
   ],
   data() {
     return {
+      baseURL: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoObj._id}`,
       completed: this.todoObj.completed,
+      editMode: false,
+      taskText: this.todoObj.task,
     };
   },
   methods: {
     changeCompletionStatus() {
       axios({
         method: 'PATCH',
-        url: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoObj._id}`,
+        url: this.baseURL,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         data: {
@@ -47,7 +51,26 @@ export default {
         },
       }).then((res) => {
         if (res.status === 200) {
-          this.$parent.$parent.updateDBPopup('Changes have been saved', 'is-success');
+          this.$parent.$parent.updateDBPopup('Task has been completed', 'is-success');
+        } else {
+          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
+        }
+      });
+    },
+
+    sendTaskChange() {
+      axios({
+        method: 'PATCH',
+        url: this.baseURL,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: {
+          task: this.taskText,
+        },
+      }).then((res) => {
+        this.editMode = false;
+        if (res.status === 200) {
+          this.$parent.$parent.updateDBPopup('Task have been changed', 'is-success');
         } else {
           this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
         }
