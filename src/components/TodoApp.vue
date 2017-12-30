@@ -27,12 +27,14 @@
         </p>
         <p class="control">
           <a class="button noborder">
-            <a class="has-text-centered" @click="completedHidden = !completedHidden">Toggle completed todo visibility</a>
+            <a class="has-text-centered" @click="completedHidden = !completedHidden">
+              {{ toggleMessage }}
+            </a>
           </a>
         </p>
       </div>
     </div>
-    
+
     <!-- Todos -->
     <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
   </div>
@@ -58,6 +60,14 @@ export default {
   created() {
     this.getAllTodos();
   },
+  computed: {
+    toggleMessage() {
+      if (!this.completedHidden) {
+        return 'Hide completed tasks';
+      }
+      return 'Show completed tasks';
+    },
+  },
   methods: {
     getAllTodos() {
       this.todos = [];
@@ -79,6 +89,7 @@ export default {
           task: this.taskToAdd,
         },
       }).then(() => {
+        this.taskToAdd = '';
         this.getAllTodos();
       });
     },

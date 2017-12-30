@@ -1,5 +1,5 @@
 <template>
-  <div id="page" style="background-color: #F5F6F7">
+  <div id="page">
     <SavedPopup :propsHide="popupHide"
                 :propsMessage="popupMessage"
                 :propsClass="popupType"></SavedPopup>
