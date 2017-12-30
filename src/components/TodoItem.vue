@@ -14,10 +14,20 @@
       </div>
 
       <div class="column is-2">
-        <span class="icon is-pulled-left">
+        <!-- <span class="icon is-pulled-left">
           <i class="fa fa-calendar" aria-hidden="true"></i>
         </span>
-        <DatePicker v-model="datePickerAcceptedData" v-on:selected="sendDateLimitChange"></DatePicker>
+        <DatePicker v-model="datePickerAcceptedData" v-on:selected="sendDateLimitChange"></DatePicker> -->
+        <div class="field has-addons">
+          <div class="control">
+            <span class="icon is-pulled-left">
+              <i class="fa fa-lg fa-calendar icon-fix" aria-hidden="true"></i>
+            </span>
+          </div>
+          <div class="control">
+              <DatePicker v-model="datePickerAcceptedData" v-on:selected="sendDateLimitChange"></DatePicker>
+          </div>
+        </div>
       </div>
 
       <div class="column is-2">
@@ -47,8 +57,6 @@ export default {
   ],
   watch: {
     completeBeforeDate(val) {
-      alert('test');
-      alert(new Date(val).getTime());
       this.sendDateLimitChange(new Date(val).getTime());
     },
   },
@@ -79,10 +87,6 @@ export default {
     },
   },
   methods: {
-    getSelectedDate(newDate) {
-      // this.completeBeforeDate = new Date(newDate).getTime();
-      alert(new Date(newDate).getTime());
-    },
     changeCompletionStatus() {
       axios({
         method: 'PATCH',
@@ -95,9 +99,9 @@ export default {
       }).then((res) => {
         if (res.status === 200) {
           this.completed = !this.completed;
-          this.$parent.$parent.updateDBPopup('Task has been completed', 'is-success');
+          this.$parent.$parent.updateDBPopup('Task has been completed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
+          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },
@@ -115,9 +119,9 @@ export default {
       }).then((res) => {
         this.editMode = false;
         if (res.status === 200) {
-          this.$parent.$parent.updateDBPopup('Task have been changed', 'is-success');
+          this.$parent.$parent.updateDBPopup('Task have been changed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
+          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },
@@ -135,9 +139,9 @@ export default {
         },
       }).then((res) => {
         if (res.status === 200) {
-          this.$parent.$parent.updateDBPopup('Task have been changed', 'is-success');
+          this.$parent.$parent.updateDBPopup('Limit has been changed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger');
+          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },
@@ -146,5 +150,7 @@ export default {
 </script>
 
 <style>
-
+.icon-fix {
+  margin: 10px 5px 0 0;
+}
 </style>

@@ -2,7 +2,8 @@
   <div id="page">
     <SavedPopup :propsHide="popupHide"
                 :propsMessage="popupMessage"
-                :propsClass="popupType"></SavedPopup>
+                :propsClass="popupType"
+                :propsHeader="popupHeader"></SavedPopup>
 
     <Navbar></Navbar>
     <div class="columns">
@@ -50,13 +51,15 @@ export default {
       popupHide: true,
       popupType: '',
       popupMessage: '',
+      popupHeader: '',
     };
   },
   methods: {
-    updateDBPopup(message, popupType) {
+    updateDBPopup(message, popupType, header) {
       this.popupHide = false;
       this.popupType = popupType;
       this.popupMessage = message;
+      this.popupHeader = header;
       setTimeout(this.closePopup, 2000);
     },
     closePopup() {

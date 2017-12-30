@@ -2,7 +2,7 @@
   <div class="slider" :class="{ close: popupHide }">
     <article class="message" :class="popupClass">
       <div class="message-header">
-        Success
+        {{ popupHeader }}
       </div>
       <div class="message-body">
         {{ popupMessage }}
@@ -17,12 +17,14 @@ export default {
     propsHide: Boolean,
     propsMessage: String,
     propsClass: String,
+    propsHeader: String,
   },
   data() {
     return {
       popupHide: true,
       popupMessage: '',
       popupClass: '',
+      popupHeader: '',
     };
   },
   watch: {
@@ -34,6 +36,9 @@ export default {
     },
     propsClass(val) {
       this.popupClass = val;
+    },
+    propsHeader(val) {
+      this.popupHeader = val;
     },
   },
 };

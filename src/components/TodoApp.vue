@@ -8,10 +8,18 @@
           <p class="modal-card-title">Add a new todo</p>
           <button class="delete" aria-label="close" @click="modalIsActive = false"></button>
         </header>
-        <section class="modal-card-body">
+        <div class="modal-card-body" style="height:480px">
           <label class="label">Task to complete</label>
           <input v-model="taskToAdd" class="input" type="text" placeholder="Task">
-        </section>
+          <div class="columns">
+            <div class="column is-3"></div>
+            <div class="column is-6">
+              <label class="label">Needs to be completed before</label>
+              <DatePicker v-model="limitToAdd"></DatePicker>
+            </div>
+          </div>
+          
+        </div>
         <footer class="modal-card-foot">
           <button class="button is-success" @click="addNewTodo">Add</button>
           <button class="button" @click="modalIsActive = false">Cancel</button>
@@ -34,7 +42,6 @@
         </p>
       </div>
     </div>
-
     <!-- Todos -->
     <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
   </div>
@@ -43,6 +50,7 @@
 <script>
 import axios from 'axios';
 import TodoItem from '@/components/TodoItem';
+import DatePicker from 'vuejs-datepicker';
 
 export default {
   data() {
@@ -51,11 +59,13 @@ export default {
       baseTodoURL: 'https://nodejs-vue-js-todo.herokuapp.com/todos',
       modalIsActive: false,
       taskToAdd: '',
+      limitToAdd: '',
       completedHidden: false,
     };
   },
   components: {
     TodoItem,
+    DatePicker,
   },
   created() {
     this.getAllTodos();
@@ -79,19 +89,26 @@ export default {
     },
 
     addNewTodo() {
-      this.modalIsActive = false;
-      axios({
-        method: 'POST',
-        url: this.baseTodoURL,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        data: {
-          task: this.taskToAdd,
-        },
-      }).then(() => {
-        this.taskToAdd = '';
-        this.getAllTodos();
-      });
+      if (this.taskToAdd !== '' && this.limitToAdd !== '') {
+        this.modalIsActive = false;
+        axios({
+          method: 'POST',
+          url: this.baseTodoURL,
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          data: {
+            task: this.taskToAdd,
+            completedDateLimit: new Date(this.limitToAdd).getTime(),
+          },
+        }).then(() => {
+          this.$parent.updateDBPopup('Task has been added', 'is-success', 'Success');
+          this.taskToAdd = '';
+          this.limitToAdd = '';
+          this.getAllTodos();
+        });
+      } else {
+        this.$parent.updateDBPopup('All fields are required', 'is-danger', 'Warning');
+      }
     },
   },
 };
@@ -103,6 +120,41 @@ export default {
 
 .noborder {
   border: none;
+}
+
+.vdp-datepicker div input {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  font-size: 1rem;
+  height: 2.25em;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  line-height: 1.5;
+  padding-bottom: calc(0.375em - 1px);
+  padding-left: calc(0.625em - 1px);
+  padding-right: calc(0.625em - 1px);
+  padding-top: calc(0.375em - 1px);
+  position: relative;
+  vertical-align: top;
+  background-color: white;
+  border-color: #dbdbdb;
+  color: #363636;
+  -webkit-box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+          box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
+  max-width: 100%;
+  width: 100%;
+  font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 </style>
  
