@@ -10,7 +10,7 @@
 
       <div class="column is-6" @click="editMode = true">
         <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p>
-        <input type="text" class="input" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
+        <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
       </div>
 
       <div class="column is-2">
@@ -97,7 +97,7 @@ export default {
       }).then((res) => {
         if (res.status === 200) {
           this.completed = !this.completed;
-          this.$parent.$parent.updateDBPopup('Task has been completed', 'is-success', 'Success');
+          this.$parent.$parent.updateDBPopup('Task status has been changed', 'is-success', 'Success');
         } else {
           this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
