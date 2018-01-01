@@ -6,7 +6,7 @@
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Add a new todo</p>
-          <button class="delete" aria-label="close" @click="modalIsActive = false"></button>
+          <button class="delete" aria-label="close" @click="turnModalOff"></button>
         </header>
         <div class="modal-card-body" style="height:480px">
           <label class="label">Task to complete</label>
@@ -22,7 +22,7 @@
         </div>
         <footer class="modal-card-foot">
           <button class="button is-success" @click="addNewTodo">Add</button>
-          <button class="button" @click="modalIsActive = false">Cancel</button>
+          <button class="button" @click="turnModalOff">Cancel</button>
         </footer>
       </div>
     </div>
@@ -79,6 +79,12 @@ export default {
     },
   },
   methods: {
+    turnModalOff() {
+      this.modalIsActive = false;
+      this.taskToAdd = '';
+      this.limitToAdd = '';
+    },
+
     getAllTodos() {
       this.todos = [];
       axios.get(this.baseTodoURL).then((response) => {

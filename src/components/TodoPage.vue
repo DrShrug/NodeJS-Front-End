@@ -34,7 +34,6 @@
 
 <script>
 import Navbar from '@/components/Navbar';
-import SideMenu from '@/components/SideMenu';
 import TodoApp from '@/components/TodoApp';
 import SavedPopup from '@/components/ChangesSavedPopup';
 
@@ -42,7 +41,6 @@ export default {
   name: 'TodoPage',
   components: {
     Navbar,
-    SideMenu,
     TodoApp,
     SavedPopup,
   },

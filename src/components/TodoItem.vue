@@ -9,15 +9,11 @@
       </div>
 
       <div class="column is-6" @click="editMode = true">
-        <p v-if="!editMode">{{ taskText }}</p>
+        <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p>
         <input type="text" class="input" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
       </div>
 
       <div class="column is-2">
-        <!-- <span class="icon is-pulled-left">
-          <i class="fa fa-calendar" aria-hidden="true"></i>
-        </span>
-        <DatePicker v-model="datePickerAcceptedData" v-on:selected="sendDateLimitChange"></DatePicker> -->
         <div class="field has-addons">
           <div class="control">
             <span class="icon is-pulled-left">
@@ -35,7 +31,6 @@
           <input type="checkbox" v-model="todoObj.completed" @change="changeCompletionStatus">
         </label>
       </div>
-      
     </div>
   </div>
   
@@ -66,10 +61,13 @@ export default {
       completed: this.todoObj.completed,
       editMode: false,
       taskText: this.todoObj.task,
-      completeBeforeDate: this.todoObj.completedDateLimit, // completedDateLimit
+      completeBeforeDate: this.todoObj.completedDateLimit,
     };
   },
   computed: {
+    checkIfLate() {
+      return (this.completeBeforeDate < new Date().getTime() && this.completed === false);
+    },
     checkConditionsToHide() {
       return (this.wantCompletedFiltered && this.completed);
     },
@@ -139,6 +137,7 @@ export default {
         },
       }).then((res) => {
         if (res.status === 200) {
+          this.completeBeforeDate = newDate;
           this.$parent.$parent.updateDBPopup('Limit has been changed', 'is-success', 'Success');
         } else {
           this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
