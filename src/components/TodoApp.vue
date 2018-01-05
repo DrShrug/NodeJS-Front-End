@@ -57,6 +57,7 @@ export default {
     return {
       todos: [],
       baseTodoURL: 'https://nodejs-vue-js-todo.herokuapp.com/todos',
+      localDevURL: 'http://localhost:3000/todos',
       modalIsActive: false,
       taskToAdd: '',
       limitToAdd: '',
@@ -87,11 +88,16 @@ export default {
 
     getAllTodos() {
       this.todos = [];
-      axios.get(this.baseTodoURL).then((response) => {
+      axios.get(this.baseTodoURL, {
+        headers: {
+          'x-auth': localStorage.getItem('token'),
+        },
+      }).then((response) => {
+        console.log(response);
         for (let i = 0; i < response.data.todos.length; i += 1) {
           this.todos.push(response.data.todos[i]);
         }
-      });
+      }).catch(e => console.log(e));
     },
 
     addNewTodo() {
@@ -102,6 +108,9 @@ export default {
           url: this.baseTodoURL,
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
+          headers: {
+            'x-auth': localStorage.getItem('token'),
+          },
           data: {
             task: this.taskToAdd,
             completedDateLimit: new Date(this.limitToAdd).getTime(),
@@ -111,7 +120,7 @@ export default {
           this.taskToAdd = '';
           this.limitToAdd = '';
           this.getAllTodos();
-        });
+        }).catch((e) => { console.log(e); });
       } else {
         this.$parent.updateDBPopup('All fields are required', 'is-danger', 'Warning');
       }

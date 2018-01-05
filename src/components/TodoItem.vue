@@ -58,6 +58,7 @@ export default {
   data() {
     return {
       baseURL: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoObj._id}`,
+      localDevURL: 'http://localhost:3000/todos',
       completed: this.todoObj.completed,
       editMode: false,
       taskText: this.todoObj.task,
@@ -91,6 +92,9 @@ export default {
         url: this.baseURL,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': localStorage.getItem('token'),
+        },
         data: {
           completed: !this.completed,
         },
@@ -110,6 +114,9 @@ export default {
         url: this.baseURL,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': localStorage.getItem('token'),
+        },
         data: {
           task: this.taskText,
           completed: this.completed,
@@ -130,6 +137,9 @@ export default {
         url: this.baseURL,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': localStorage.getItem('token'),
+        },
         data: {
           task: this.taskText,
           completed: this.completed,
