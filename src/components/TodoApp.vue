@@ -44,12 +44,10 @@
     </div>
 
     <!-- Todos -->
-    <div class="bottom-margin">
-      <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
-    </div>
-
+    <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+    
     <!-- Footer -->
-    <div class="box bottom-rounded-border">
+    <div class="box bottom-rounded-border footermargintop">
       Nothing to see here
     </div>
   
@@ -153,8 +151,8 @@ export default {
   border-radius: 0 0 10px 10px
 }
 
-.bottom-margin {
-  margin-bottom: 24px;
+.footermargintop {
+  margin-top: 24px;
 }
 
 .noborder {
