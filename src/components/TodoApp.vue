@@ -47,7 +47,7 @@
     <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
     
     <!-- Footer -->
-    <div class="box bottom-rounded-border footermargintop">
+    <div class="boxSetMargin bottom-rounded-border">
       Nothing to see here
     </div>
   
@@ -151,8 +151,15 @@ export default {
   border-radius: 0 0 10px 10px
 }
 
-.footermargintop {
+.boxSetMargin {
   margin-top: 24px;
+  background-color: white;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+          box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
+  color: #4a4a4a;
+  display: block;
+  padding: 1.25rem;
 }
 
 .noborder {

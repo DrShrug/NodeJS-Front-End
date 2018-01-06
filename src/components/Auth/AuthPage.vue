@@ -28,6 +28,11 @@ export default {
     Login,
     Signup,
   },
+  mounted() {
+    if (localStorage.getItem('token') !== null) {
+      this.$router.push('/todo');
+    }
+  },
   data() {
     return {
       email: '',
