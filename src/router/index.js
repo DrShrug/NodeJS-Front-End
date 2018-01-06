@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import TodoPage from '@/components/TodoPage';
-import Auth from '@/components/Authentification';
+import Auth from '@/components/Auth/AuthPage';
 
 Vue.use(Router);
 

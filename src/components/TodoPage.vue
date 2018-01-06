@@ -24,7 +24,7 @@
         </section>
 
         <!-- Todo application -->
-        <div class="container box is-shadowless transparentBG">
+        <div class="container box is-shadowless todoApp">
           <TodoApp></TodoApp>
         </div>
       </div>
@@ -80,8 +80,9 @@ export default {
     color:white;
 }
 
-.transparentBG {
+.todoApp {
   background: transparent;
+  margin-top: 0;
 }
 
 .sidemenu {

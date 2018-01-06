@@ -42,8 +42,17 @@
         </p>
       </div>
     </div>
+
     <!-- Todos -->
-    <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+    <div class="bottom-margin">
+      <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+    </div>
+
+    <!-- Footer -->
+    <div class="box bottom-rounded-border">
+      Nothing to see here
+    </div>
+  
   </div>
 </template>
 
@@ -97,7 +106,14 @@ export default {
         for (let i = 0; i < response.data.todos.length; i += 1) {
           this.todos.push(response.data.todos[i]);
         }
-      }).catch(e => console.log(e));
+      }).catch((e) => {
+        if (e.response.status === 401) {
+          this.$router.push('/');
+        } else {
+          this.$parent.updateDBPopup('You shouldn\'t be seeing this, please contact the developper',
+          'is-danger', 'Warning');
+        }
+      });
     },
 
     addNewTodo() {
@@ -131,6 +147,14 @@ export default {
 <style>
 .top-rounded-border {
   border-radius: 10px 10px 0 0
+}
+
+.bottom-rounded-border {
+  border-radius: 0 0 10px 10px
+}
+
+.bottom-margin {
+  margin-bottom: 24px;
 }
 
 .noborder {
