@@ -8,16 +8,23 @@
       <p class="has-text-danger" :class="{ 'is-hidden' : loginErrorHidden }">Authentification failed</p>
 
       <div class="field">
-        <div class="control">
-          <input v-model="email" class="input is-medium" type="email" placeholder="Your Email" autofocus="">
+        <div class="control has-icons-left">
+          <input v-model="email" class="input is-primary is-medium" type="email" placeholder="Your Email" autofocus="">
+          <span class="icon is-small is-left">
+            <i class="fa fa-envelope"></i>
+          </span>
         </div>
       </div>
 
       <div class="field">
-        <div class="control">
-          <input v-model="password" class="input is-medium" type="password" placeholder="Your Password">
+        <div class="control has-icons-left">
+          <input v-model="password" class="input is-primary is-medium" type="password" placeholder="Your Password">
+          <span class="icon is-small is-left">
+            <i class="fa fa-lock"></i>
+          </span>
         </div>
       </div>
+
       <a @click="login" :class="{ 'is-loading' : loggingIn }" class="button is-block is-primary is-medium bottom-margin loginbtn">Login</a>
     </form>
     <hr>
@@ -31,9 +38,6 @@
 
 <script>
 import axios from 'axios';
-
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-/* "space-infix-ops": ["allow"] */
 
 export default {
   data() {
@@ -64,7 +68,8 @@ export default {
         this.loggingIn = false;
         this.loginErrorHidden = true;
         localStorage.setItem('token', res.headers['x-auth']);
-        console.log(res.headers['x-auth']);
+        localStorage.setItem('email', res.data.email);
+        console.log(res);
         this.$router.push('/todo');
       }).catch((e) => {
         this.loggingIn = false;
@@ -80,25 +85,16 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.hero .nav, .hero.is-success .nav {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
 .box {
   margin-top: 5rem;
 }
-
 input {
   font-weight: 300;
 }
-
 p.subtitle {
   padding-top: 1rem;
 }
-.navNoDisplacement {
-  position: absolute;
-  width: 100%;
-}
+
 .bottom-margin {
   margin-bottom: 12px;
 }
@@ -110,9 +106,5 @@ p.subtitle {
 }
 .loginbtn {
   border-radius: 5px;
-}
-.login-form {
-  width: 90%;
-  margin: auto;
 }
 </style>

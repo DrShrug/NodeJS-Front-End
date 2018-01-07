@@ -9,24 +9,33 @@
         Error signing up
       </p>
       <div class="field">
-        <div class="control">
-          <input v-model="email" class="input is-medium" type="email" placeholder="Your Email" autofocus="">
+        <div class="control has-icons-left">
+          <input v-model="email" class="input is-primary is-medium" type="email" placeholder="Your Email" autofocus="">
+          <span class="icon is-small is-left">
+            <i class="fa fa-envelope"></i>
+          </span>
         </div>
       </div>
 
       <div class="field">
-        <div class="control">
-          <input v-model="password" class="input is-medium" type="password" placeholder="Your Password">
+        <div class="control has-icons-left">
+          <input v-model="password" class="input is-primary is-medium" type="password" placeholder="Your Password">
+          <span class="icon is-small is-left">
+            <i class="fa fa-lock"></i>
+          </span>
         </div>
       </div>
 
       <div class="field">
-        <div class="control">
-          <input v-model="passwordConfirm" class="input is-medium" type="password" placeholder="Confirm your Password">
+        <div class="control has-icons-left">
+          <input v-model="passwordConfirm" class="input is-primary is-medium" type="password" placeholder="Confirm your Password">
+          <span class="icon is-small is-left">
+            <i class="fa fa-lock"></i>
+          </span>
         </div>
       </div>
 
-      <a @click="signup" :class="{ 'is-loading' : signingUp }" class="button is-block is-primary is-medium bottom-margin loginbtn">Sign up</a>
+      <a @click="signup" :class="{ 'is-loading' : signingUp }" class="button is-block is-primary is-medium bottom-margin signupbtn">Sign up</a>
     </form>
 
     <hr>
@@ -39,15 +48,8 @@
 
 <script>
 import axios from 'axios';
-import Login from '@/components/Auth/AuthLogin';
-
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-/* "space-infix-ops": ["allow"] */
 
 export default {
-  components: {
-    Login,
-  },
   data() {
     return {
       email: '',
@@ -78,11 +80,11 @@ export default {
           this.signingUp = false;
           this.signupErrorHidden = true;
           localStorage.setItem('token', res.headers['x-auth']);
+          localStorage.setItem('email', res.data.email);
           this.$router.push('/todo');
-        }).catch((e) => {
+        }).catch(() => {
           this.signingUp = false;
           this.signupErrorHidden = false;
-          console.log(e);
         });
       } else {
         this.signupErrorHidden = false;
@@ -96,39 +98,22 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.hero .nav, .hero.is-success .nav {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
 .box {
   margin-top: 5rem;
 }
-
 input {
   font-weight: 300;
 }
-
 p.subtitle {
   padding-top: 1rem;
-}
-.navNoDisplacement {
-  position: absolute;
-  width: 100%;
 }
 .bottom-margin {
   margin-bottom: 12px;
 }
-.login-block {
-  margin: auto;
-}
 .biggerpaddingbox {
   padding:30px;
 }
-.loginbtn {
+.signupbtn {
   border-radius: 5px;
-}
-.login-form {
-  width: 90%;
-  margin: auto;
 }
 </style>

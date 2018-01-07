@@ -65,7 +65,7 @@ export default {
       completeBeforeDate: this.todoObj.completedDateLimit,
     };
   },
-  computed: {
+  computed: { // Most unused but keeping for future change's sake
     checkIfLate() {
       return (this.completeBeforeDate < new Date().getTime() && this.completed === false);
     },

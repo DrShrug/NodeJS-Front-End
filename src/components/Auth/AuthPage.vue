@@ -3,11 +3,12 @@
     <section class="hero is-success is-fullheight">
       <div class="hero-body">
         <div class="container has-text-centered">
-          <div class="column is-3 login-block">
-            <Login :class="{ 'is-hidden' : signupMode }"></Login>
-            <Signup :class="{ 'is-hidden' : !signupMode }"></Signup>
+          <div class="column is-4 login-block">
+            <Login :class="{ 'is-hidden' : signupMode }" class="animated fadeOut fadeIn"></Login>
+            <Signup :class="{ 'is-hidden' : !signupMode }" class="animated fadeOut fadeIn"></Signup>
             
-            <p class="has-text-light">Source code : <a class="has-text-info">[Github]</a></p>
+            <p class="has-text-light">Source code : 
+            <a class="has-text-info" href="https://github.com/" target="_blank">[Github]</a></p>
           </div>
         </div>
       </div>
@@ -19,9 +20,6 @@
 <script>
 import Login from '@/components/Auth/AuthLogin';
 import Signup from '@/components/Auth/AuthSignup';
-
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-/* "space-infix-ops": ["allow"] */
 
 export default {
   components: {
@@ -35,10 +33,6 @@ export default {
   },
   data() {
     return {
-      email: '',
-      password: '',
-      loggingIn: false,
-      loginErrorHidden: true,
       signupMode: false,
     };
   },
@@ -54,39 +48,37 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.hero .nav, .hero.is-success .nav {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
 .box {
   margin-top: 5rem;
 }
-
 input {
   font-weight: 300;
 }
-
 p.subtitle {
   padding-top: 1rem;
-}
-.navNoDisplacement {
-  position: absolute;
-  width: 100%;
-}
-.bottom-margin {
-  margin-bottom: 12px;
 }
 .login-block {
   margin: auto;
 }
-.biggerpaddingbox {
-  padding:30px;
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
-.loginbtn {
-  border-radius: 5px;
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
 }
-.login-form {
-  width: 90%;
-  margin: auto;
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.fadeOut {
+  animation-name: fadeOut;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
 }
 </style>

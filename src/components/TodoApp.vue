@@ -100,7 +100,6 @@ export default {
           'x-auth': localStorage.getItem('token'),
         },
       }).then((response) => {
-        console.log(response);
         for (let i = 0; i < response.data.todos.length; i += 1) {
           this.todos.push(response.data.todos[i]);
         }
@@ -154,7 +153,6 @@ export default {
 .boxSetMargin {
   margin-top: 24px;
   background-color: white;
-  border-radius: 5px;
   -webkit-box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
           box-shadow: 0 2px 3px rgba(10, 10, 10, 0.1), 0 0 0 1px rgba(10, 10, 10, 0.1);
   color: #4a4a4a;

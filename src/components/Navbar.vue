@@ -21,7 +21,7 @@
         </div>
 
         <div class="navbar-end">
-          <a class="navbar-item" href="">
+          <a class="navbar-item" href="https://github.com/">
             <span class="icon">
               <i class="fa fa-lg fa-github"></i>
             </span>
@@ -30,7 +30,12 @@
             <a class="navbar-link">
               Account
             </a>
-            <div class="navbar-dropdown">
+            <div class="navbar-dropdown is-right">
+              <div class="navbar-item">
+                Signed in as<br>
+                {{ userEmail }}
+              </div>
+              <hr class="navbar-divider">
               <a class="navbar-item">
                 Overview
               </a>
@@ -56,6 +61,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
+      userEmail: localStorage.getItem('email'),
       userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
     };
   },
@@ -67,6 +73,7 @@ export default {
         },
       }).then(() => {
         localStorage.removeItem('token');
+        localStorage.removeItem('email');
         this.$router.push('/');
         // console.log(res.headers['x-auth']);
       });
