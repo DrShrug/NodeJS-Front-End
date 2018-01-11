@@ -67,8 +67,8 @@ export default {
       }).then((res) => {
         this.loggingIn = false;
         this.loginErrorHidden = true;
-        localStorage.setItem('token', res.headers['x-auth']);
-        localStorage.setItem('email', res.data.email);
+        sessionStorage.setItem('token', res.headers['x-auth']);
+        sessionStorage.setItem('email', res.data.email);
         console.log(res);
         this.$router.push('/todo');
       }).catch((e) => {

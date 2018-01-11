@@ -21,7 +21,7 @@
         </div>
 
         <div class="navbar-end">
-          <a class="navbar-item" href="https://github.com/">
+          <a class="navbar-item" href="https://github.com/" target="_blank">
             <span class="icon">
               <i class="fa fa-lg fa-github"></i>
             </span>
@@ -61,7 +61,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      userEmail: localStorage.getItem('email'),
+      userEmail: sessionStorage.getItem('email'),
       userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
     };
   },
@@ -69,11 +69,11 @@ export default {
     logout() {
       axios.delete(`${this.userBaseURL}/me/logout`, {
         headers: {
-          'x-auth': localStorage.getItem('token'),
+          'x-auth': sessionStorage.getItem('token'),
         },
       }).then(() => {
-        localStorage.removeItem('token');
-        localStorage.removeItem('email');
+        sessionStorage.removeItem('token');
+        sessionStorage.removeItem('email');
         this.$router.push('/');
         // console.log(res.headers['x-auth']);
       });

@@ -97,7 +97,7 @@ export default {
       this.todos = [];
       axios.get(this.baseTodoURL, {
         headers: {
-          'x-auth': localStorage.getItem('token'),
+          'x-auth': sessionStorage.getItem('token'),
         },
       }).then((response) => {
         for (let i = 0; i < response.data.todos.length; i += 1) {
@@ -122,7 +122,7 @@ export default {
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
           headers: {
-            'x-auth': localStorage.getItem('token'),
+            'x-auth': sessionStorage.getItem('token'),
           },
           data: {
             task: this.taskToAdd,

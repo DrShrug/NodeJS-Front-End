@@ -93,7 +93,7 @@ export default {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': localStorage.getItem('token'),
+          'x-auth': sessionStorage.getItem('token'),
         },
         data: {
           completed: !this.completed,
@@ -115,7 +115,7 @@ export default {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': localStorage.getItem('token'),
+          'x-auth': sessionStorage.getItem('token'),
         },
         data: {
           task: this.taskText,
@@ -138,7 +138,7 @@ export default {
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': localStorage.getItem('token'),
+          'x-auth': sessionStorage.getItem('token'),
         },
         data: {
           task: this.taskText,
