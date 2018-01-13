@@ -5,7 +5,7 @@
       <div class="navbar-brand">
         <a class="navbar-item" href="/todo">
           <img src="../../static/favicon.png" alt="Bulma: a modern CSS framework based on Flexbox">
-          Todo
+          Task Manager
         </a>
 
         <div class="navbar-burger burger" data-target="menu">
