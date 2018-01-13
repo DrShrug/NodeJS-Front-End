@@ -133,7 +133,9 @@ export default {
           this.taskToAdd = '';
           this.limitToAdd = '';
           this.getAllTodos();
-        }).catch((e) => { console.log(e); });
+        }).catch(() => {
+          // console.log(e);
+        });
       } else {
         this.$parent.updateDBPopup('All fields are required', 'is-danger', 'Warning');
       }

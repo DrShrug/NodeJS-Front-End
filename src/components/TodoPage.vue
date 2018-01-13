@@ -1,9 +1,9 @@
 <template>
   <div id="page">
-    <SavedPopup :propsHide="popupHide"
+    <MessagePopup :propsHide="popupHide"
                 :propsMessage="popupMessage"
                 :propsClass="popupType"
-                :propsHeader="popupHeader"></SavedPopup>
+                :propsHeader="popupHeader"></MessagePopup>
 
     <Navbar></Navbar>
     <div class="columns">
@@ -35,14 +35,14 @@
 <script>
 import Navbar from '@/components/Navbar';
 import TodoApp from '@/components/TodoApp';
-import SavedPopup from '@/components/ChangesSavedPopup';
+import MessagePopup from '@/components/MessagePopup';
 
 export default {
   name: 'TodoPage',
   components: {
     Navbar,
     TodoApp,
-    SavedPopup,
+    MessagePopup,
   },
   data() {
     return {

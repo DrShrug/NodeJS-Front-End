@@ -3,10 +3,10 @@
     <div class="container is-fluid">
 
       <div class="navbar-brand">
-        <div class="navbar-item">
-            <img src="../assets/todologo.png" alt="Bulma: a modern CSS framework based on Flexbox">
-            Todo
-        </div>
+        <a class="navbar-item" href="/todo">
+          <img src="../../static/favicon.png" alt="Bulma: a modern CSS framework based on Flexbox">
+          Todo
+        </a>
 
         <div class="navbar-burger burger" data-target="menu">
           <span></span>
@@ -36,7 +36,7 @@
                 {{ userEmail }}
               </div>
               <hr class="navbar-divider">
-              <a class="navbar-item">
+              <a class="navbar-item" href="/account/overview">
                 Overview
               </a>
               <a class="navbar-item">

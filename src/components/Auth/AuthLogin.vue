@@ -9,7 +9,7 @@
 
       <div class="field">
         <div class="control has-icons-left">
-          <input v-model="email" class="input is-primary is-medium" type="email" placeholder="Your Email" autofocus="">
+          <input v-on:keyup.enter="login" v-model="email" class="input is-primary is-medium" type="email" placeholder="Your Email" autofocus="">
           <span class="icon is-small is-left">
             <i class="fa fa-envelope"></i>
           </span>
@@ -18,7 +18,7 @@
 
       <div class="field">
         <div class="control has-icons-left">
-          <input v-model="password" class="input is-primary is-medium" type="password" placeholder="Your Password">
+          <input v-on:keyup.enter="login" v-model="password" class="input is-primary is-medium" type="password" placeholder="Your Password">
           <span class="icon is-small is-left">
             <i class="fa fa-lock"></i>
           </span>
@@ -69,12 +69,10 @@ export default {
         this.loginErrorHidden = true;
         sessionStorage.setItem('token', res.headers['x-auth']);
         sessionStorage.setItem('email', res.data.email);
-        console.log(res);
         this.$router.push('/todo');
-      }).catch((e) => {
+      }).catch(() => {
         this.loggingIn = false;
         this.loginErrorHidden = false;
-        console.log(e);
       });
     },
   },
