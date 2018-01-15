@@ -22,6 +22,9 @@
       <TableRow v-if="todo.isCompleted" :key="todo._id" v-for="(todo, index) in data" :todo="todo" :pos="index"></TableRow>
     </tbody>
   </table>
+  <div v-else>
+    <p class="has-text-grey-dark is-size-3">No tasks has been completed yet</p>
+  </div>
 </template>
 
 <script>
@@ -34,7 +37,7 @@ export default {
   props: ['data'],
   computed: {
     hasCompleted() {
-      return this.data.length > 0;
+      return this.data.filter(todo => todo.isCompleted).length > 0;
     },
   },
 };
