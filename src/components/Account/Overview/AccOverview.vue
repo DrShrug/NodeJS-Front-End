@@ -73,11 +73,11 @@
 
 <script>
 import axios from 'axios';
-import Navbar from './../../Navbar';
-import MessagePopup from './../../MessagePopup';
-import Chart from '../Chart';
-import TileItem from './InfoTilesItem';
-import CompletionTable from './CompletionTable';
+import Navbar from '@/components/Navbar';
+import MessagePopup from '@/components/MessagePopup';
+import Chart from '@/components/Account/Chart';
+import TileItem from '@/components/Account/Overview/InfoTilesItem';
+import CompletionTable from '@/components/Account/Overview/CompletionTable';
 
 export default {
   components: {
@@ -106,15 +106,15 @@ export default {
       return sessionStorage.getItem('email');
     },
     countCompletedTasks() {
-      return this.userTodos.filter(todo => todo.completed).length;
+      return this.userTodos.filter(todo => todo.isCompleted).length;
     },
     countLateTasks() {
       return this.userTodos.filter(todo =>
-      todo.completedDateLimit < new Date().getTime()
-      && !todo.completed).length;
+      todo.completeByTime < new Date().getTime()
+      && !todo.isCompleted).length;
     },
     countUncompletedTasks() {
-      return this.userTodos.length - this.userTodos.filter(todo => todo.completed).length;
+      return this.userTodos.length - this.userTodos.filter(todo => todo.isCompleted).length;
     },
   },
   methods: {

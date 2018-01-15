@@ -24,8 +24,8 @@ export default {
     displayCompletedChart() {
       const completedPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.tododata.forEach((todo) => {
-        if (todo.completedTime !== null) {
-          const date = new Date(todo.completedTime);
+        if (todo.completedAtTime !== null) {
+          const date = new Date(todo.completedAtTime);
           completedPerMonth[date.getMonth()] += 1;
         }
       });
@@ -43,7 +43,7 @@ export default {
     displayDateLimitChart() {
       const completedPerMonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       this.tododata.forEach((todo) => {
-        const date = new Date(todo.completedDateLimit);
+        const date = new Date(todo.completeByTime);
         completedPerMonth[date.getMonth()] += 1;
       });
       this.renderChart({

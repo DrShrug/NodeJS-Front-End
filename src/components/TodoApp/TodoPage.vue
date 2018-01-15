@@ -8,7 +8,6 @@
     <Navbar></Navbar>
     <div class="columns">
       <div class="column">
-        
         <!-- Hero Header -->
         <section class="hero landingSection">
           <div class="hero-body">
@@ -34,7 +33,7 @@
 
 <script>
 import Navbar from '@/components/Navbar';
-import TodoApp from '@/components/TodoApp';
+import TodoApp from '@/components/TodoApp/TodoApp';
 import MessagePopup from '@/components/MessagePopup';
 
 export default {

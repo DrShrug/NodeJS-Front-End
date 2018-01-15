@@ -1,5 +1,5 @@
 <template>
-  <table class="table is-hoverable is-fullwidth">
+  <table v-if="hasCompleted" class="table is-hoverable is-fullwidth">
     <thead>
       <tr>
         <th>Position</th>
@@ -19,7 +19,7 @@
       </tr>
     </tfoot>
     <tbody>
-      <TableRow v-if="todo.completed" :key="todo._id" v-for="(todo, index) in data" :todo="todo" :pos="index"></TableRow>
+      <TableRow v-if="todo.isCompleted" :key="todo._id" v-for="(todo, index) in data" :todo="todo" :pos="index"></TableRow>
     </tbody>
   </table>
 </template>
@@ -32,11 +32,9 @@ export default {
     TableRow,
   },
   props: ['data'],
-  methods: {
-    displayTable() {
-      this.date.foreach(() => {
-        //
-      });
+  computed: {
+    hasCompleted() {
+      return this.data.length > 0;
     },
   },
 };

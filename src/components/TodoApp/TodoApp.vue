@@ -1,12 +1,12 @@
 <template>
   <div>
-    <!-- Adding a new todo -->
-    <div class="modal" :class="{ 'is-active' : modalIsActive}">
+    <!-- Adding a new todo modal -->
+    <div class="modal" :class="{ 'is-active' : modalAddIsActive }">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Add a new todo</p>
-          <button class="delete" aria-label="close" @click="turnModalOff"></button>
+          <button class="delete" aria-label="close" @click="addModalOff"></button>
         </header>
         <div class="modal-card-body" style="height:480px">
           <label class="label">Task to complete</label>
@@ -18,20 +18,36 @@
               <DatePicker v-model="limitToAdd"></DatePicker>
             </div>
           </div>
-          
         </div>
         <footer class="modal-card-foot">
           <button class="button is-success" @click="addNewTodo">Add</button>
-          <button class="button" @click="turnModalOff">Cancel</button>
+          <button class="button" @click="addModalOff">Cancel</button>
         </footer>
       </div>
+    </div>
+
+    <!-- Deleting a todo modal -->
+    <div class="modal" :class="{ 'is-active' : modalRemoveIsActive}">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="box is-marginless top-rounded-border">
+          <p class="has-text-grey-dark is-size-3">Confirmation</p>
+          <hr class="navbar-divider half-size">
+          <p class="has-text-grey-dark is-size-5">Are you sure you want to delete this?</p>
+        </div>
+        <footer class="modal-card-foot">
+          <button class="button is-danger" @click="deleteConfirmed">Delete</button>
+          <button class="button" @click="cancelDelete">Cancel</button>
+        </footer>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="cancelDelete"></button>
     </div>
 
     <!-- Small menu -->
     <div class="box top-rounded-border">
       <div class="field is-grouped">
         <p class="control is-expanded">
-          <a class="button is-primary" @click="modalIsActive = true">Add new todo</a>
+          <a class="button is-primary" @click="modalAddIsActive = true">Add new todo</a>
         </p>
         <p class="control">
           <a class="button noborder">
@@ -44,7 +60,7 @@
     </div>
 
     <!-- Todos -->
-    <TodoItem v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+    <TodoItem @deleteTodo="deletionConfirmation" v-for="todo in todos" :wantCompletedFiltered="completedHidden" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
     
     <!-- Footer -->
     <div class="boxSetMargin bottom-rounded-border">
@@ -56,7 +72,7 @@
 
 <script>
 import axios from 'axios';
-import TodoItem from '@/components/TodoItem';
+import TodoItem from '@/components/TodoApp/TodoItem';
 import DatePicker from 'vuejs-datepicker';
 
 export default {
@@ -65,10 +81,12 @@ export default {
       todos: [],
       baseTodoURL: 'https://nodejs-vue-js-todo.herokuapp.com/todos',
       localDevURL: 'http://localhost:3000/todos',
-      modalIsActive: false,
+      modalAddIsActive: false,
+      modalRemoveIsActive: false,
       taskToAdd: '',
       limitToAdd: '',
       completedHidden: false,
+      todoToDelete: null,
     };
   },
   components: {
@@ -87,12 +105,35 @@ export default {
     },
   },
   methods: {
-    turnModalOff() {
-      this.modalIsActive = false;
+    addModalOff() {
+      this.modalAddIsActive = false;
       this.taskToAdd = '';
       this.limitToAdd = '';
     },
-
+    deletionConfirmation(id) {
+      this.todoToDelete = id;
+      this.modalRemoveIsActive = true;
+    },
+    deleteConfirmed() {
+      axios({
+        method: 'DELETE',
+        url: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoToDelete}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+      }).then(() => {
+        this.todoToDelete = null;
+        this.modalRemoveIsActive = false;
+        this.getAllTodos();
+        this.$parent.updateDBPopup('Todo has been deleted', 'is-danger', 'Success');
+      });
+    },
+    cancelDelete() {
+      this.todoToDelete = null;
+      this.modalRemoveIsActive = false;
+    },
     getAllTodos() {
       this.todos = [];
       axios.get(this.baseTodoURL, {
@@ -115,7 +156,7 @@ export default {
 
     addNewTodo() {
       if (this.taskToAdd !== '' && this.limitToAdd !== '') {
-        this.modalIsActive = false;
+        this.modalAddIsActive = false;
         axios({
           method: 'POST',
           url: this.baseTodoURL,
@@ -126,7 +167,7 @@ export default {
           },
           data: {
             task: this.taskToAdd,
-            completedDateLimit: new Date(this.limitToAdd).getTime(),
+            completeByTime: new Date(this.limitToAdd).getTime(),
           },
         }).then(() => {
           this.$parent.updateDBPopup('Task has been added', 'is-success', 'Success');

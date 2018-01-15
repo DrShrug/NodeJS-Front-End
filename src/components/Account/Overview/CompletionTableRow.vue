@@ -13,16 +13,16 @@ export default {
   props: ['todo', 'pos'],
   computed: {
     completedAt() {
-      const date = new Date(this.todo.completedTime);
+      const date = new Date(this.todo.completedAtTime);
       return `${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
     },
     limitToComplete() {
-      const date = new Date(this.todo.completedDateLimit);
+      const date = new Date(this.todo.completeByTime);
       return `${date.getDate()} ${this.getMonthName(date.getMonth())} ${date.getFullYear()}`;
     },
     completedOnTime() {
-      const isLate = this.todo.completedDateLimit > this.todo.completedTime;
-      return (isLate && this.todo.completed === true ? 'On time' : 'Late');
+      const isLate = this.todo.completeByTime > this.todo.completedAtTime;
+      return (isLate && this.todo.isCompleted === true ? 'On time' : 'Late');
     },
   },
   methods: {

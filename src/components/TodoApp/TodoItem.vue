@@ -1,6 +1,6 @@
 <template>
   <div class="box" :class="{ 'is-hidden' : checkConditionsToHide }">
-    <div class="columns">
+    <div class="columns center-content">
 
       <div class="column is-2">
         <span class="icon is-pulled-left">
@@ -8,8 +8,8 @@
         </span>
       </div>
 
-      <div class="column is-6" @click="editMode = true">
-        <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p>
+      <div class="column is-5" @click="editMode = true">
+        <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p> 
         <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
       </div>
 
@@ -28,12 +28,16 @@
 
       <div class="column is-2">
         <label class="checkbox is-pulled-right">Completed
-          <input type="checkbox" v-model="todoObj.completed" @change="changeCompletionStatus">
+          <input type="checkbox" v-model="todoObj.isCompleted" @change="changeCompletionStatus">
         </label>
+      </div>
+      <div class="column is-1">
+        <span class="icon" @click="deleteTodo()">
+          <i class="fa fa-trash-o" aria-hidden="true"></i>
+        </span>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script>
@@ -58,16 +62,15 @@ export default {
   data() {
     return {
       baseURL: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoObj._id}`,
-      localDevURL: 'http://localhost:3000/todos',
-      completed: this.todoObj.completed,
+      completed: this.todoObj.isCompleted,
       editMode: false,
       taskText: this.todoObj.task,
-      completeBeforeDate: this.todoObj.completedDateLimit,
+      completeBeforeDate: this.todoObj.completeByTime,
     };
   },
   computed: { // Most unused but keeping for future change's sake
     checkIfLate() {
-      return (this.completeBeforeDate < new Date().getTime() && this.completed === false);
+      return (this.completeBeforeDate < new Date().getTime() && !this.completed);
     },
     checkConditionsToHide() {
       return (this.wantCompletedFiltered && this.completed);
@@ -96,7 +99,7 @@ export default {
           'x-auth': sessionStorage.getItem('token'),
         },
         data: {
-          completed: !this.completed,
+          isCompleted: !this.completed,
         },
       }).then((res) => {
         if (res.status === 200) {
@@ -119,7 +122,7 @@ export default {
         },
         data: {
           task: this.taskText,
-          completed: this.completed,
+          isCompleted: this.completed,
         },
       }).then((res) => {
         this.editMode = false;
@@ -142,8 +145,8 @@ export default {
         },
         data: {
           task: this.taskText,
-          completed: this.completed,
-          completedDateLimit: new Date(newDate).getTime(),
+          isCompleted: this.completed,
+          completeByTime: new Date(newDate).getTime(),
         },
       }).then((res) => {
         if (res.status === 200) {
@@ -154,6 +157,10 @@ export default {
         }
       });
     },
+
+    deleteTodo() {
+      this.$emit('deleteTodo', this.todoObj._id);
+    },
   },
 };
 </script>
@@ -161,5 +168,12 @@ export default {
 <style>
 .icon-fix {
   margin: 10px 5px 0 0;
+}
+.center-content {
+  display: flex;
+  align-items: center;
+}
+.icon:hover {
+  cursor: pointer;
 }
 </style>
