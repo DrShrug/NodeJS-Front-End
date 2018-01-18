@@ -26,6 +26,9 @@
               <i class="fa fa-lg fa-github"></i>
             </span>
           </a>
+          <a class="navbar-item" href="/test">
+            Testing ground
+          </a>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Account

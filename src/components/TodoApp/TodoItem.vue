@@ -25,7 +25,6 @@
           </div>
         </div>
       </div>
-
       <div class="column is-2">
         <label class="checkbox is-pulled-right">Completed
           <input type="checkbox" v-model="todoObj.isCompleted" @change="changeCompletionStatus">
@@ -104,9 +103,9 @@ export default {
       }).then((res) => {
         if (res.status === 200) {
           this.completed = !this.completed;
-          this.$parent.$parent.updateDBPopup('Task status has been changed', 'is-success', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Task status has been changed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },
@@ -127,9 +126,9 @@ export default {
       }).then((res) => {
         this.editMode = false;
         if (res.status === 200) {
-          this.$parent.$parent.updateDBPopup('Task have been changed', 'is-success', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Task have been changed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },
@@ -151,9 +150,9 @@ export default {
       }).then((res) => {
         if (res.status === 200) {
           this.completeBeforeDate = newDate;
-          this.$parent.$parent.updateDBPopup('Limit has been changed', 'is-success', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Limit has been changed', 'is-success', 'Success');
         } else {
-          this.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
+          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
         }
       });
     },

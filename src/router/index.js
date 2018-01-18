@@ -3,12 +3,21 @@ import Router from 'vue-router';
 import TodoPage from '@/components/TodoApp/TodoPage';
 import Auth from '@/components/Auth/AuthPage';
 import Overview from '@/components/Account/Overview/AccOverview';
+import Test from '@/components/testing';
 
 Vue.use(Router);
 
 const router = new Router({
   mode: 'history',
   routes: [
+    {
+      path: '/test',
+      name: 'Testing',
+      component: Test,
+      meta: {
+        title: 'Testing new features',
+      },
+    },
     {
       path: '/todo',
       name: 'Todo',
