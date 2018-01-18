@@ -1,36 +1,16 @@
 <template>
   <div>
     <!-- Adding a new todo modal -->
-    <AddTodoModal :class="{ 'is-active':addTodoModalActive }" :categories="categories"></AddTodoModal>
+    <AddTodoModal :class="{ 'is-active':addTodoModalActive }" :categories="categories" />
 
     <!-- Deleting a todo modal -->
-    <DeleteTodoModal :class="{ 'is-active':removeTodoModalActive }"></DeleteTodoModal>
+    <DeleteTodoModal :class="{ 'is-active':removeTodoModalActive }" />
 
-    <!-- Creating a new category -->
-    <div class="modal" :class="{ 'is-active' : modalCreateCategoryActive }">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Create a new category</p>
-          <button class="delete" aria-label="close" @click="closeCategoryModal"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class="field">
-            <label class="label">Category Name</label>
-            <p class="control is-expanded has-icons-left">
-              <input class="input" type="text" placeholder="Name" v-model="newCategoryName">
-              <span class="icon is-small is-left">
-                <i class="fa fa-tags" aria-hidden="true"></i>
-              </span>
-            </p>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button class="button is-success" @click="createNewCategory">Add Category</button>
-          <button class="button" @click="closeCategoryModal">Cancel</button>
-        </footer>
-      </div>
-    </div>
+    <!-- Creating a new category modal -->
+    <AddCategoryModal :class="{ 'is-active':modalCreateCategoryActive }" />
+
+    <!-- Deleting a category modal -->
+    <DeleteCategoryModal :class="{ 'is-active':modalDeleteCategoryActive }" />
 
     <!-- Small menu -->
     <div class="box top-rounded-border">
@@ -52,7 +32,6 @@
     </div>
     <!-- Todos -->
     <TodoCategory @deleteCategory="confirmCategoryDeletion" @deleteTodo="deletionConfirmation" :wantCompletedFiltered="completedHidden" :key="category._id" v-for="category in categories" :category="category" :todos="todos.filter(todo => todo.categoryName === category.categoryName)"></TodoCategory>
-    <!-- <TodoItem  v-for="todo in todos"  :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem> -->
     
     <!-- Footer -->
     <div class="boxSetMargin bottom-rounded-border">
@@ -65,15 +44,19 @@
 <script>
 import axios from 'axios';
 import TodoCategory from '@/components/TodoApp/TodoCategory';
+import AddCategoryModal from '@/components/TodoApp/Modals/CreateCategory';
 import AddTodoModal from '@/components/TodoApp/Modals/CreateTodo';
 import DeleteTodoModal from '@/components/TodoApp/Modals/DeleteTodo';
+import DeleteCategoryModal from '@/components/TodoApp/Modals/DeleteCategory';
 
 
 export default {
   components: {
     TodoCategory,
+    AddCategoryModal,
     AddTodoModal,
     DeleteTodoModal,
+    DeleteCategoryModal,
   },
   data() {
     return {
@@ -87,7 +70,6 @@ export default {
       todoToDelete: null,
       categoryToDelete: null,
       categories: [],
-      newCategoryName: '',
     };
   },
   created() {
@@ -113,7 +95,6 @@ export default {
     cancelDelete() {
       this.todoToDelete = null;
       this.removeTodoModalActive = false;
-      this.deleteConfirmed();
     },
     deleteConfirmed() {
       axios({
@@ -128,13 +109,16 @@ export default {
         this.todoToDelete = null;
         this.removeTodoModalActive = false;
         this.getAllTodos();
-        this.$parent.updateDBPopup('Todo has been deleted', 'is-danger', 'Success');
+        this.$parent.updateDBPopup('Todo has been deleted', 'is-success', 'Success');
       });
     },
     confirmCategoryDeletion(id) {
       this.categoryToDelete = id;
       this.modalDeleteCategoryActive = true;
-      this.deleteCategory();
+    },
+    cancelCategoryDelete() {
+      this.categoryToDelete = null;
+      this.modalDeleteCategoryActive = false;
     },
     deleteCategory() {
       axios({
@@ -214,29 +198,27 @@ export default {
         if (e.response.status === 401) {
           this.$router.push('/');
         } else {
-          this.$parent.updateDBPopup('Things no work', 'is-danger', 'Warning');
+          this.$parent.updateDBPopup('Things ain\'t working', 'is-danger', 'Warning');
         }
       });
     },
-    createNewCategory() {
-      if (this.newCategoryName !== '') {
-        axios({
-          method: 'POST',
-          url: 'https://nodejs-vue-js-todo.herokuapp.com/categories',
-          contentType: 'application/json; charset=utf-8',
-          dataType: 'json',
-          headers: {
-            'x-auth': sessionStorage.getItem('token'),
-          },
-          data: {
-            categoryName: this.newCategoryName,
-          },
-        }).then(() => {
-          this.$parent.updateDBPopup('Category has been created', 'is-success', 'Success');
-          this.modalCreateCategoryActive = false;
-          this.getAllCategories();
-        });
-      }
+    createNewCategory(name) {
+      axios({
+        method: 'POST',
+        url: 'https://nodejs-vue-js-todo.herokuapp.com/categories',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+        data: {
+          categoryName: name,
+        },
+      }).then(() => {
+        this.$parent.updateDBPopup('Category has been created', 'is-success', 'Success');
+        this.modalCreateCategoryActive = false;
+        this.getAllCategories();
+      });
     },
   },
 };

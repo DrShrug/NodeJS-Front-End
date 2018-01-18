@@ -34,7 +34,7 @@
 
 <script>
 import DatePicker from 'vuejs-datepicker';
-import CategoryDropdown from '@/components/TodoApp/Modals/CreateTodoCategoryDropdown';
+import CategoryDropdown from '@/components/TodoApp/Modals/TodoCategoryDropdown';
 
 export default {
   components: { DatePicker, CategoryDropdown },
