@@ -28,6 +28,13 @@
             </a>
           </a>
         </p>
+        <p class="control">
+          <button class="button">
+            <span class="icon">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </span>
+          </button>
+        </p>
       </div>
     </div>
     <!-- Todos -->

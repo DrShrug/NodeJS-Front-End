@@ -14,7 +14,6 @@
       </div>
     </section>
   </div>
-  
 </template>
 
 <script>
@@ -44,7 +43,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .hero.is-success {
   background:#272733;
 }

@@ -17,7 +17,9 @@
 
       <div class="navbar-menu" id="menu">
         <div class="navbar-start">
-          <!-- Left side -->
+          <a class="navbar-item">
+            Switch group
+          </a>
         </div>
 
         <div class="navbar-end">

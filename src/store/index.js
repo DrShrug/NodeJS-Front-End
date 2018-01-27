@@ -11,35 +11,76 @@ const store = new Vuex.Store({
   state: {
     projects: [],
     todos: [],
+    userDetails: null,
+    userLoggedIn: {
+      name: null,
+      email: null,
+      token: '',
+      isLoggedIn: false,
+    },
   },
   actions: {
+    userLogin({ commit }, { email, password }) {
+      return axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/users/login`,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: {
+          email,
+          password,
+        },
+      }).then((res) => {
+        commit('loginSuccess', {
+          email: res.data.email,
+          token: res.headers['x-auth'],
+        });
+        return res;
+      });
+    },
+    userSignup({ commit }, { email, password }) {
+      return axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/users`,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: {
+          email,
+          password,
+        },
+      }).then((res) => {
+        commit('loginSuccess', {
+          email: res.data.email,
+          token: res.headers['x-auth'],
+        });
+      });
+    },
     loadTodosFromAPI({ commit }) {
-      axios.get('https://nodejs-vue-js-todo.herokuapp.com/todos', {
+      return axios.get(`${process.env.API_URL}/todos`, {
         headers: {
           'x-auth': sessionStorage.getItem('token'),
         },
       }).then((response) => {
         commit('setTodoList', { todosData: response.data.todos });
+        return response;
       }).catch((e) => {
         if (e.response.status === 401) {
           router.push({ name: 'Auth' });
         }
       });
     },
-    loadProjects({ commit }) {
-      commit('setProjectList', {
-        list: [
-          {
-            id: 0,
-            name: 'Project 1',
-            isCompleted: false,
-          },
-          {
-            id: 1,
-            name: 'Project 2',
-            isCompleted: true,
-          },
-        ],
+    loadProfileOverview({ commit }) {
+      return axios.get(`${process.env.API_URL}/users/me`, {
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+      }).then((user) => {
+        commit('setUserDetails', { userData: user.data });
+        return user.data;
+      }).catch((e) => {
+        if (e.response.status === 401) {
+          router.push({ name: 'Auth' });
+        }
       });
     },
     sendNewProject({ commit }, projectDetails) {
@@ -52,8 +93,15 @@ const store = new Vuex.Store({
     setTodoList(state, { todosData }) {
       state.todos = todosData;
     },
-    setProjectList(state, { list }) {
-      state.projects = list;
+    setUserDetails(state, { userData }) {
+      state.userDetails = userData;
+    },
+    loginSuccess(state, userData) {
+      sessionStorage.setItem('token', userData.token);
+      state.userLoggedIn.name = 'To be implemented';
+      state.userLoggedIn.email = userData.email;
+      state.userLoggedIn.token = userData.token;
+      state.userLoggedIn.isLoggedIn = true;
     },
     addProject(state, { project }) {
       state.projects.push({
@@ -65,6 +113,7 @@ const store = new Vuex.Store({
   },
   getters: {
     openProjects: state => state.projects.filter(project => !project.isCompleted),
+    isLoggedIn: state => state.userLoggedIn.isLoggedIn,
   },
 });
 

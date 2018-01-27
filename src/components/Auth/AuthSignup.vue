@@ -47,15 +47,12 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
       email: '',
       password: '',
       passwordConfirm: '',
-      userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
       signingUp: false,
       signupErrorHidden: true,
     };
@@ -67,21 +64,15 @@ export default {
     signup() {
       if (this.password === this.passwordConfirm) {
         this.signingUp = true;
-        axios({
-          method: 'POST',
-          url: `${this.userBaseURL}`,
-          contentType: 'application/json; charset=utf-8',
-          dataType: 'json',
-          data: {
-            email: this.email,
-            password: this.password,
-          },
-        }).then((res) => {
+        this.$store.dispatch('userSignup', {
+          email: this.email,
+          password: this.password,
+        }).then(() => {
           this.signingUp = false;
           this.signupErrorHidden = true;
-          sessionStorage.setItem('token', res.headers['x-auth']);
-          sessionStorage.setItem('email', res.data.email);
-          this.$router.push('/todo');
+          if (this.$store.getters.isLoggedIn) {
+            this.$router.push('/todo');
+          }
         }).catch(() => {
           this.signingUp = false;
           this.signupErrorHidden = false;

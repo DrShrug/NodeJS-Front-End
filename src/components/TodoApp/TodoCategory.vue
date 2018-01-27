@@ -1,5 +1,5 @@
 <template>
-  <div class="box is-borderless">
+  <div class="box is-borderless boxMarginFix">
     <p class="has-text-grey-dark is-size-4 has-text-left">
       <span class="categoryName is-unselectable" @click="switchVisibility">
         {{category.categoryName}}
@@ -51,6 +51,9 @@ export default {
 </script>
 
 <style>
+.boxMarginFix {
+  margin-top: 0;
+}
 .categoryName {
   cursor: pointer;
 }
