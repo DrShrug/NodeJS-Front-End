@@ -4,18 +4,22 @@ import axios from 'axios';
 import router from '@/router';
 
 /* eslint-disable no-param-reassign */
+/* eslint no-underscore-dangle: 0 */
+/*
+  Currently getting changes from API after every request
+  Think of implementing a pooling system
+*/
 
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    projects: [],
     todos: [],
+    categories: [],
     userDetails: null,
     userLoggedIn: {
       name: null,
       email: null,
-      token: '',
       isLoggedIn: false,
     },
   },
@@ -55,6 +59,44 @@ const store = new Vuex.Store({
         });
       });
     },
+    deleteTodo({ commit, dispatch }, toDelete) {
+      return axios({
+        method: 'DELETE',
+        url: `${process.env.API_URL}/todos/${toDelete}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+      }).then((res) => {
+        dispatch('loadTodosFromAPI');
+        return res;
+      });
+    },
+    deleteCategory({ commit, dispatch }, toDelete) {
+      return axios({
+        method: 'DELETE',
+        url: `${process.env.API_URL}/categories/${toDelete}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+      }).then((res) => {
+        dispatch('loadCategoriesFromAPI');
+        return res;
+      });
+    },
+    loadCategoriesFromAPI({ commit }) {
+      return axios.get(`${process.env.API_URL}/categories`, {
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+      }).then((res) => {
+        commit('setCategoryList', { categoriesData: res.data.categories });
+        return res;
+      });
+    },
     loadTodosFromAPI({ commit }) {
       return axios.get(`${process.env.API_URL}/todos`, {
         headers: {
@@ -83,37 +125,68 @@ const store = new Vuex.Store({
         }
       });
     },
-    sendNewProject({ commit }, projectDetails) {
-      commit('addProject', {
-        project: projectDetails,
+    newCategory({ commit, dispatch }, { categoryName }) {
+      axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/categories`,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+        data: {
+          categoryName,
+        },
+      }).then((res) => {
+        dispatch('loadCategoriesFromAPI');
+        return res;
+      });
+    },
+    newTodo({ commit, dispatch }, { task, completeByTime, categoryId, categoryName }) {
+      axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/todos`,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+        data: {
+          task,
+          completeByTime,
+          _category: categoryId,
+          categoryName,
+        },
+      }).then((res) => {
+        dispatch('loadTodosFromAPI');
+        return res;
       });
     },
   },
   mutations: {
     setTodoList(state, { todosData }) {
-      state.todos = todosData;
+      state.todos = [];
+      todosData.forEach(todo => state.todos.push(todo));
     },
     setUserDetails(state, { userData }) {
       state.userDetails = userData;
+    },
+    setCategoryList(state, { categoriesData }) {
+      state.categories = [];
+      categoriesData.forEach(category => state.categories.push(category));
     },
     loginSuccess(state, userData) {
       sessionStorage.setItem('token', userData.token);
       state.userLoggedIn.name = 'To be implemented';
       state.userLoggedIn.email = userData.email;
-      state.userLoggedIn.token = userData.token;
       state.userLoggedIn.isLoggedIn = true;
-    },
-    addProject(state, { project }) {
-      state.projects.push({
-        id: project.id,
-        name: project.name,
-        isCompleted: false,
-      });
     },
   },
   getters: {
     openProjects: state => state.projects.filter(project => !project.isCompleted),
-    isLoggedIn: state => state.userLoggedIn.isLoggedIn,
+    isLoggedIn: state => state.userLoggedIn.isLoggedIn && state.userLoggedIn.token !== '',
+    allTodos: state => state.todos,
+    allCategories: state => state.categories,
   },
 });
 

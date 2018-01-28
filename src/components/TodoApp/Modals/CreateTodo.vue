@@ -14,7 +14,7 @@
           </div>
         </div>
         <div class="field">
-          <CategoryDropdown :categories="categories" @setCategory="setCategory"></CategoryDropdown>
+          <CategoryDropdown :categories="allCategories" @setCategory="setCategory"></CategoryDropdown>
         </div>
         <div class="columns">
           <div class="column is-offset-3 is-6">
@@ -38,7 +38,11 @@ import CategoryDropdown from '@/components/TodoApp/Modals/TodoCategoryDropdown';
 
 export default {
   components: { DatePicker, CategoryDropdown },
-  props: ['categories'],
+  computed: {
+    allCategories() {
+      return this.$store.getters.allCategories;
+    },
+  },
   data() {
     return {
       modalIsActive: false,
