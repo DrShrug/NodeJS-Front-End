@@ -13,7 +13,7 @@
     <div :class="{ 'is-hidden':hiddenOrEmpty }">
       <hr class="navbar-divider">
       <div class="column is-11 is-offset-1">
-        <TodoItem @deleteTodo="sendDeletionConfirmationToApp" :wantCompletedFiltered="wantCompletedFiltered" v-for="todo in todos" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+        <TodoItem v-for="todo in todos" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@ import TodoItem from '@/components/TodoApp/TodoItem';
 
 export default {
   /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
-  props: ['todos', 'category', 'wantCompletedFiltered'],
+  props: ['todos', 'category'],
   components: { TodoItem },
   data() {
     return {
@@ -37,14 +37,11 @@ export default {
     },
   },
   methods: {
-    sendDeletionConfirmationToApp(id) {
-      this.$emit('deleteTodo', id);
-    },
     switchVisibility() {
       this.hideCategoryTodos = !this.hideCategoryTodos;
     },
     deleteCategory() {
-      this.$emit('deleteCategory', this.category._id);
+      this.$modal.show('deleteCategory', { idToDelete: this.category._id });
     },
   },
 };

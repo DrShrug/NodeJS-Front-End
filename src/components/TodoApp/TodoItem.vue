@@ -10,7 +10,7 @@
 
       <div class="column is-5" @click="editMode = true">
         <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p> 
-        <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendTaskChange" @blur="sendTaskChange">
+        <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendChangesToServer" @blur="sendChangesToServer">
       </div>
 
       <div class="column is-2">
@@ -21,13 +21,13 @@
             </span>
           </div>
           <div class="control">
-              <DatePicker v-model="datePickerAcceptedData" v-on:selected="sendDateLimitChange"></DatePicker>
+            <DatePicker v-model="datePickerAcceptedData" v-on:selected="setNewDateLimit"></DatePicker>
           </div>
         </div>
       </div>
       <div class="column is-2">
         <label class="checkbox is-pulled-right">Completed
-          <input type="checkbox" v-model="todoObj.isCompleted" @change="changeCompletionStatus">
+          <input type="checkbox" v-model="todoObj.isCompleted" @change="sendChangesToServer">
         </label>
       </div>
       <div class="column is-1">
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import DatePicker from 'vuejs-datepicker';
 
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
@@ -49,30 +48,23 @@ export default {
   components: {
     DatePicker,
   },
-  props: [
-    'todoObj',
-    'wantCompletedFiltered',
-  ],
-  watch: {
-    completeBeforeDate(val) {
-      this.sendDateLimitChange(new Date(val).getTime());
-    },
-  },
+  props: ['todoObj'],
   data() {
     return {
-      baseURL: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoObj._id}`,
-      completed: this.todoObj.isCompleted,
       editMode: false,
       taskText: this.todoObj.task,
       completeBeforeDate: this.todoObj.completeByTime,
     };
   },
   computed: { // Most unused but keeping for future change's sake
+    hideCompleted() {
+      return this.$store.getters.hideCompleted;
+    },
     checkIfLate() {
-      return (this.completeBeforeDate < new Date().getTime() && !this.completed);
+      return (this.completeBeforeDate < new Date().getTime() && !this.todoObj.isCompleted);
     },
     checkConditionsToHide() {
-      return (this.wantCompletedFiltered && this.completed);
+      return (this.hideCompleted && this.todoObj.isCompleted);
     },
     ISOToReadable() {
       const date = new Date(this.completeBeforeDate);
@@ -88,77 +80,35 @@ export default {
     },
   },
   methods: {
-    changeCompletionStatus() {
-      axios({
-        method: 'PATCH',
-        url: this.baseURL,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-        data: {
-          isCompleted: !this.completed,
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          this.completed = !this.completed;
-          this.$parent.$parent.$parent.updateDBPopup('Task status has been changed', 'is-success', 'Success');
-        } else {
-          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
-        }
-      });
+    setNewDateLimit(newTime) {
+      this.completeBeforeDate = newTime.getTime();
+      this.sendChangesToServer();
     },
-
-    sendTaskChange() {
-      axios({
-        method: 'PATCH',
-        url: this.baseURL,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-        data: {
-          task: this.taskText,
-          isCompleted: this.completed,
-        },
+    sendChangesToServer() {
+      this.$store.dispatch('modifyTodo', {
+        todoId: this.todoObj._id,
+        task: this.taskText,
+        isCompleted: this.todoObj.isCompleted,
+        completeByTime: this.completeBeforeDate,
       }).then((res) => {
         this.editMode = false;
         if (res.status === 200) {
-          this.$parent.$parent.$parent.updateDBPopup('Task have been changed', 'is-success', 'Success');
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            text: 'Todo has been modified',
+          });
         } else {
-          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'There was an error saving your changes',
+          });
         }
       });
     },
-
-    sendDateLimitChange(newDate) {
-      axios({
-        method: 'PATCH',
-        url: this.baseURL,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-        data: {
-          task: this.taskText,
-          isCompleted: this.completed,
-          completeByTime: new Date(newDate).getTime(),
-        },
-      }).then((res) => {
-        if (res.status === 200) {
-          this.completeBeforeDate = newDate;
-          this.$parent.$parent.$parent.updateDBPopup('Limit has been changed', 'is-success', 'Success');
-        } else {
-          this.$parent.$parent.$parent.updateDBPopup('Something went wrong', 'is-danger', 'Success');
-        }
-      });
-    },
-
     deleteTodo() {
-      this.$emit('deleteTodo', this.todoObj._id);
+      this.$modal.show('deleteTodo', { toDelete: this.todoObj._id });
     },
   },
 };

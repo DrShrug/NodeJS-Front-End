@@ -1,22 +1,39 @@
 <template>
-  <div>
-    <section class="hero is-fullheight">
-      <div class="hero-body">
-        <div class="container box has-text-centered">
-          <Second></Second>
+  <modalComp height="auto" name="createCategory">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Create a new category</p>
+        <button class="delete" aria-label="close" @click="closeModal"></button>
+      </header>
+      <section class="modal-card-body">
+        <div class="field">
+          <label class="label">Category Name</label>
+          <p class="control is-expanded has-icons-left">
+            <input class="input" type="text" placeholder="Name" v-model="newCategoryName">
+            <span class="icon is-small is-left">
+              <i class="fa fa-tags" aria-hidden="true"></i>
+            </span>
+          </p>
         </div>
-      </div>
-    </section>
-  </div>
+      </section>
+      <footer class="modal-card-foot">
+        <button class="button is-success" >Add Category</button>
+        <button class="button" @click="closeModal">Cancel</button>
+      </footer>
+  </modalComp>
 </template>
 
 <script>
-import Second from './SecondChild';
-
 export default {
   name: 'Testing',
-  components: {
-    Second,
+  data() {
+    return {
+      newCategoryName: '',
+    };
+  },
+  methods: {
+    closeModal() {
+      this.$modal.hide('createCategory');
+    },
   },
 };
 </script>

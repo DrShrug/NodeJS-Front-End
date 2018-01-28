@@ -20,6 +20,7 @@ const store = new Vuex.Store({
     userLoggedIn: {
       name: null,
       email: null,
+      hideCompleted: false,
       isLoggedIn: false,
     },
   },
@@ -126,7 +127,7 @@ const store = new Vuex.Store({
       });
     },
     newCategory({ commit, dispatch }, { categoryName }) {
-      axios({
+      return axios({
         method: 'POST',
         url: `${process.env.API_URL}/categories`,
         contentType: 'application/json; charset=utf-8',
@@ -162,8 +163,30 @@ const store = new Vuex.Store({
         return res;
       });
     },
+    modifyTodo({ commit, dispatch }, todoChanges) {
+      return axios({
+        method: 'PATCH',
+        url: `${process.env.API_URL}/todos/${todoChanges.todoId}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': sessionStorage.getItem('token'),
+        },
+        data: {
+          task: todoChanges.task,
+          isCompleted: todoChanges.isCompleted,
+          completeByTime: todoChanges.completeByTime,
+        },
+      }).then(res => res);
+    },
+    switchCompletedVisiblity({ commit }) {
+      commit('switchCompletedVisiblity');
+    },
   },
   mutations: {
+    switchCompletedVisiblity(state) {
+      state.userLoggedIn.hideCompleted = !state.userLoggedIn.hideCompleted;
+    },
     setTodoList(state, { todosData }) {
       state.todos = [];
       todosData.forEach(todo => state.todos.push(todo));
@@ -187,6 +210,7 @@ const store = new Vuex.Store({
     isLoggedIn: state => state.userLoggedIn.isLoggedIn && state.userLoggedIn.token !== '',
     allTodos: state => state.todos,
     allCategories: state => state.categories,
+    hideCompleted: state => state.userLoggedIn.hideCompleted,
   },
 });
 

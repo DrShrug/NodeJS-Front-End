@@ -1,15 +1,15 @@
 <template>
-  <div class="dropdown" :class="{ 'is-active': categoryDropdownActive }">
-    <div class="dropdown-trigger" @click="closeDropdown">
-      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+  <div class="dropdown fullwidth" :class="{ 'is-active': categoryDropdownActive }">
+    <div class="dropdown-trigger fullwidth" @click="closeDropdown">
+      <button class="button is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu">
         <span>{{ dropdownText }}</span>
         <span class="icon is-small">
           <i class="fa fa-angle-down" aria-hidden="true"></i>
         </span>
       </button>
     </div>
-    <div class="dropdown-menu" id="dropdown-menu" role="menu">
-      <div class="dropdown-content">
+    <div class="dropdown-menu fullwidth" id="dropdown-menu" role="menu">
+      <div class="dropdown-content fullwidth">
         <a :key="category._id" v-for="category in categories" class="dropdown-item" @click="selectedCategory(category._id, category.categoryName)">
           {{ category.categoryName }}
         </a>
@@ -42,3 +42,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fullwidth {
+  width: 100%;
+}
+</style>

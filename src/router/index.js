@@ -5,6 +5,7 @@ import Auth from '@/components/Auth/AuthPage';
 import Overview from '@/components/Account/Overview/AccOverview';
 import Test from '@/components/Tests/Main';
 import Visuals from '@/components/Tests/Visuals';
+import ChildTest from '@/components/Tests/Child';
 
 Vue.use(Router);
 
@@ -15,6 +16,14 @@ const router = new Router({
       path: '/test',
       name: 'Testing',
       component: Test,
+      meta: {
+        title: 'Testing page',
+      },
+    },
+    {
+      path: '/child',
+      name: 'Testing',
+      component: ChildTest,
       meta: {
         title: 'Testing page',
       },
