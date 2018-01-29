@@ -37,14 +37,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
       email: '',
       password: '',
-      userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
       loggingIn: false,
       loginErrorHidden: true,
     };
@@ -55,21 +52,15 @@ export default {
     },
     login() {
       this.loggingIn = true;
-      axios({
-        method: 'POST',
-        url: `${this.userBaseURL}/login`,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        data: {
-          email: this.email,
-          password: this.password,
-        },
-      }).then((res) => {
+      this.$store.dispatch('userLogin', {
+        email: this.email,
+        password: this.password,
+      }).then(() => {
         this.loggingIn = false;
         this.loginErrorHidden = true;
-        sessionStorage.setItem('token', res.headers['x-auth']);
-        sessionStorage.setItem('email', res.data.email);
-        this.$router.push('/todo');
+        if (this.$store.getters.isLoggedIn) {
+          this.$router.push('/todo');
+        }
       }).catch(() => {
         this.loggingIn = false;
         this.loginErrorHidden = false;
@@ -83,16 +74,12 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.box {
-  margin-top: 5rem;
-}
 input {
   font-weight: 300;
 }
 p.subtitle {
   padding-top: 1rem;
 }
-
 .bottom-margin {
   margin-bottom: 12px;
 }

@@ -1,37 +1,34 @@
 <template>
   <div>
-    <!-- Adding a new todo modal -->
-    <AddTodoModal :class="{ 'is-active':addTodoModalActive }" :categories="categories" />
-
-    <!-- Deleting a todo modal -->
-    <DeleteTodoModal :class="{ 'is-active':removeTodoModalActive }" />
-
-    <!-- Creating a new category modal -->
-    <AddCategoryModal :class="{ 'is-active':modalCreateCategoryActive }" />
-
-    <!-- Deleting a category modal -->
-    <DeleteCategoryModal :class="{ 'is-active':modalDeleteCategoryActive }" />
-
     <!-- Small menu -->
     <div class="box top-rounded-border">
       <div class="field is-grouped">
         <p class="control">
-          <a class="button is-primary" @click="addTodoModalActive = true">Add new todo</a>
+          <a class="button is-primary" @click="$modal.show('createTodo')">Add new todo</a>
         </p>
         <p class="control is-expanded">
-          <a class="button is-primary" @click="modalCreateCategoryActive = true">Add new category</a>
+          <a class="button is-primary" @click="$modal.show('createCategory')">Add new category</a>
         </p>
         <p class="control">
           <a class="button noborder">
-            <a class="has-text-centered" @click="completedHidden = !completedHidden">
+            <a class="has-text-centered" @click="$store.dispatch('switchCompletedVisiblity')">
               {{ toggleMessage }}
             </a>
           </a>
         </p>
+        <p class="control">
+          <button class="button" @click="reloadData()" :class="{ 'is-disabled is-loading':reloadDataInProgress }">
+            <span class="icon">
+              <i class="fa fa-refresh" aria-hidden="true"></i>
+            </span>
+          </button>
+        </p>
       </div>
     </div>
     <!-- Todos -->
-    <TodoCategory @deleteCategory="confirmCategoryDeletion" @deleteTodo="deletionConfirmation" :wantCompletedFiltered="completedHidden" :key="category._id" v-for="category in categories" :category="category" :todos="todos.filter(todo => todo.categoryName === category.categoryName)"></TodoCategory>
+    <TodoCategory :key="category._id" v-for="category in allCategories" 
+                  :category="category" 
+                  :todos="allTodos.filter(todo => todo._category === category._id)" />
     
     <!-- Footer -->
     <div class="boxSetMargin bottom-rounded-border">
@@ -42,182 +39,87 @@
 </template>
 
 <script>
-import axios from 'axios';
 import TodoCategory from '@/components/TodoApp/TodoCategory';
-import AddCategoryModal from '@/components/TodoApp/Modals/CreateCategory';
-import AddTodoModal from '@/components/TodoApp/Modals/CreateTodo';
-import DeleteTodoModal from '@/components/TodoApp/Modals/DeleteTodo';
-import DeleteCategoryModal from '@/components/TodoApp/Modals/DeleteCategory';
-
 
 export default {
   components: {
     TodoCategory,
-    AddCategoryModal,
-    AddTodoModal,
-    DeleteTodoModal,
-    DeleteCategoryModal,
   },
   data() {
     return {
-      todos: [],
-      baseTodoURL: 'https://nodejs-vue-js-todo.herokuapp.com/todos',
-      addTodoModalActive: false,
-      removeTodoModalActive: false,
-      modalCreateCategoryActive: false,
-      modalDeleteCategoryActive: false,
       completedHidden: false,
-      todoToDelete: null,
-      categoryToDelete: null,
-      categories: [],
+      reloadDataInProgress: false,
     };
   },
   created() {
-    this.getAllTodos();
-    this.getAllCategories();
+    this.$store.dispatch('loadCategoriesFromAPI');
+    this.$store.dispatch('loadTodosFromAPI');
   },
   computed: {
+    allTodos() {
+      return this.$store.getters.allTodos;
+    },
+    completedVisibility() {
+      return this.$store.getters.hideCompleted;
+    },
+    allCategories() {
+      return this.$store.getters.allCategories;
+    },
     toggleMessage() {
-      if (!this.completedHidden) {
+      if (!this.completedVisibility) {
         return 'Hide completed tasks';
       }
       return 'Show completed tasks';
     },
   },
   methods: {
-    addTodoModalOff() {
-      this.addTodoModalActive = false;
-    },
-    deletionConfirmation(id) {
-      this.todoToDelete = id;
-      this.removeTodoModalActive = true;
-    },
-    cancelDelete() {
-      this.todoToDelete = null;
-      this.removeTodoModalActive = false;
-    },
-    deleteConfirmed() {
-      axios({
-        method: 'DELETE',
-        url: `https://nodejs-vue-js-todo.herokuapp.com/todos/${this.todoToDelete}`,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then(() => {
-        this.todoToDelete = null;
-        this.removeTodoModalActive = false;
-        this.getAllTodos();
-        this.$parent.updateDBPopup('Todo has been deleted', 'is-success', 'Success');
+    reloadData() {
+      this.reloadDataInProgress = true;
+      this.$store.dispatch('loadCategoriesFromAPI').then(() => {
+        this.$store.dispatch('loadTodosFromAPI').then(() => {
+          this.reloadDataInProgress = false;
+        });
       });
-    },
-    confirmCategoryDeletion(id) {
-      this.categoryToDelete = id;
-      this.modalDeleteCategoryActive = true;
-    },
-    cancelCategoryDelete() {
-      this.categoryToDelete = null;
-      this.modalDeleteCategoryActive = false;
-    },
-    deleteCategory() {
-      axios({
-        method: 'DELETE',
-        url: `https://nodejs-vue-js-todo.herokuapp.com/categories/${this.categoryToDelete}`,
-        dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then(() => {
-        this.categoryToDelete = null;
-        this.modalDeleteCategoryActive = false;
-        this.getAllCategories();
-        this.getAllTodos();
-        this.$parent.updateDBPopup('Category has been deleted', 'is-danger', 'Success');
-      });
-    },
-    closeCategoryModal() {
-      this.modalCreateCategoryActive = false;
-      this.newCategoryName = '';
     },
     getAllTodos() {
-      this.todos = [];
-      axios.get(this.baseTodoURL, {
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then((response) => {
-        for (let i = 0; i < response.data.todos.length; i += 1) {
-          this.todos.push(response.data.todos[i]);
-        }
-      }).catch((e) => {
+      this.$store.dispatch('loadTodosFromAPI').catch((e) => {
         if (e.response.status === 401) {
           this.$router.push('/');
         } else {
-          this.$parent.updateDBPopup('You shouldn\'t be seeing this, please contact the developper',
-          'is-danger', 'Warning');
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'Something went wrong when fetching data',
+          });
         }
       });
     },
-
     addNewTodo(todo) {
       this.modalAddIsActive = false;
-      axios({
-        method: 'POST',
-        url: this.baseTodoURL,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-        data: {
-          task: todo.task,
-          completeByTime: todo.completeByTime,
-          _category: todo.categoryId,
-          categoryName: todo.categoryName,
-        },
-      }).then(() => {
-        this.$parent.updateDBPopup('Task has been added', 'is-success', 'Success');
+      this.$store.dispatch('newTodo', todo)
+      .then(() => {
         this.taskToAdd = '';
         this.limitToAdd = '';
-        this.getAllTodos();
+        this.$notify({
+          type: 'success',
+          title: 'Success',
+          text: 'Todo has been added',
+        });
       }).catch(() => {
         // console.log(e);
       });
     },
     getAllCategories() {
-      this.categories = [];
-      axios.get('https://nodejs-vue-js-todo.herokuapp.com/categories', {
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then((response) => {
-        response.data.categories.forEach(category => this.categories.push(category));
-      }).catch((e) => {
+      this.$store.dispatch('loadCategoriesFromAPI').catch((e) => {
         if (e.response.status === 401) {
           this.$router.push('/');
         } else {
-          this.$parent.updateDBPopup('Things ain\'t working', 'is-danger', 'Warning');
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'Something went wrong when fetching data',
+          });
         }
-      });
-    },
-    createNewCategory(name) {
-      axios({
-        method: 'POST',
-        url: 'https://nodejs-vue-js-todo.herokuapp.com/categories',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json',
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-        data: {
-          categoryName: name,
-        },
-      }).then(() => {
-        this.$parent.updateDBPopup('Category has been created', 'is-success', 'Success');
-        this.modalCreateCategoryActive = false;
-        this.getAllCategories();
       });
     },
   },

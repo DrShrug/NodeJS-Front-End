@@ -14,7 +14,6 @@
       </div>
     </section>
   </div>
-  
 </template>
 
 <script>
@@ -44,12 +43,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .hero.is-success {
   background:#272733;
-}
-.box {
-  margin-top: 5rem;
 }
 input {
   font-weight: 300;

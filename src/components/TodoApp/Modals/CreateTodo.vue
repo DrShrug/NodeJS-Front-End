@@ -1,35 +1,34 @@
 <template>
-  <div class="modal" :class="{ 'is-active' : modalIsActive }">
-    <div class="modal-background"></div>
-    <div class="modal-card">
+  <modalComp height="auto" name="createTodo" :adaptive="true" :scrollable="true">
       <header class="modal-card-head">
         <p class="modal-card-title">Add a new todo</p>
-        <button class="delete" aria-label="close" @click="addModalOff"></button>
+        <button class="delete" aria-label="close" @click="$modal.hide('createTodo')"></button>
       </header>
-      <div class="modal-card-body" style="height:550px">
+      <section class="modal-card-body setHeight">
         <div class="field">
-          <label class="label">Task to complete</label>
-          <div class="control">
+          <label class="label has-text-centered">Task to complete</label>
+          <div class="control centeredForm">
             <input v-model="taskToAdd" class="input" type="text" placeholder="Task">
           </div>
         </div>
-        <div class="field">
-          <CategoryDropdown :categories="categories" @setCategory="setCategory"></CategoryDropdown>
-        </div>
-        <div class="columns">
+        <div class="columns field">
           <div class="column is-offset-3 is-6">
-            <label class="label">Needs to be completed before</label>
+            <label class="label has-text-centered">Task category</label>
+            <CategoryDropdown width="auto" :categories="allCategories" @setCategory="setCategory" />
+          </div>
+        </div>
+        <div class="columns field">
+          <div class="column is-offset-3 is-6">
+            <label class="label has-text-centered">Needs to be completed before</label>
             <DatePicker v-model="limitToAdd"></DatePicker>
           </div>
         </div>
-      </div>
+      </section>
       <footer class="modal-card-foot">
-        <button class="button is-success" @click="callParentMethodAddTodo">Add</button>
-        <button class="button" @click="addModalOff">Cancel</button>
+        <button class="button is-success" @click="addTodo">Add</button>
+        <button class="button" @click="$modal.hide('createTodo')">Cancel</button>
       </footer>
-    </div>
-    
-  </div>
+  </modalComp>
 </template>
 
 <script>
@@ -38,35 +37,51 @@ import CategoryDropdown from '@/components/TodoApp/Modals/TodoCategoryDropdown';
 
 export default {
   components: { DatePicker, CategoryDropdown },
-  props: ['categories'],
+  computed: {
+    allCategories() {
+      return this.$store.getters.allCategories;
+    },
+  },
   data() {
     return {
-      modalIsActive: false,
       taskToAdd: '',
       limitToAdd: '',
       categoryId: '',
       categoryName: '',
+      test: ['1'],
     };
   },
   methods: {
-    addModalOff() {
-      this.taskToAdd = '';
-      this.limitToAdd = '';
-      this.categoryId = '';
-      this.categoryName = '';
-      this.$parent.addTodoModalOff();
+    add() {
+      this.test.push('test');
     },
-    callParentMethodAddTodo() {
+    addTodo() {
       if (this.taskToAdd !== '' && this.limitToAdd !== '' && this.categoryId !== '' && this.categoryName !== '') {
-        this.$parent.addNewTodo({
+        this.$store.dispatch('newTodo', {
           task: this.taskToAdd,
-          completeByTime: new Date(this.limitToAdd).getTime(),
+          completeByTime: this.limitToAdd.getTime(),
           categoryId: this.categoryId,
           categoryName: this.categoryName,
+        }).then(() => {
+          this.$notify({
+            type: 'success',
+            title: 'Success',
+            text: 'Todo has been added',
+          });
+          this.$modal.hide('createTodo');
+        }).catch(() => {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'Category already exists',
+          });
         });
-        this.addModalOff();
       } else {
-        this.$parent.$parent.updateDBPopup('All fields are required', 'is-danger', 'Warning');
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: 'All fields must be filled',
+        });
       }
     },
     setCategory(category) {
@@ -76,3 +91,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.setHeight {
+  min-height: 500px;
+}
+</style>

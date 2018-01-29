@@ -2,7 +2,7 @@
   <table v-if="hasCompleted" class="table is-hoverable is-fullwidth">
     <thead>
       <tr>
-        <th>Position</th>
+        <th>Category</th>
         <th>Task</th>
         <th>Completion status</th>
         <th>Completed at</th>
@@ -11,7 +11,7 @@
     </thead>
     <tfoot>
       <tr>
-        <th>Position</th>
+        <th>Category</th>
         <th>Task</th>
         <th>Completion status</th>
         <th>Completed at</th>
@@ -19,7 +19,7 @@
       </tr>
     </tfoot>
     <tbody>
-      <TableRow v-if="todo.isCompleted" :key="todo._id" v-for="(todo, index) in data" :todo="todo" :pos="index"></TableRow>
+      <TableRow v-if="todo.isCompleted" :key="todo._id" v-for="todo in _.sortBy(data, ['completeByTime'])" :todo="todo"></TableRow>
     </tbody>
   </table>
   <div v-else>

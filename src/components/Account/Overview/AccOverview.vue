@@ -1,12 +1,6 @@
 <template>
   <div id="profile-overview">
-    <MessagePopup :propsHide="popupHide"
-                  :propsMessage="popupMessage"
-                  :propsClass="popupType"
-                  :propsHeader="popupHeader">
-    </MessagePopup>
-
-    <Navbar></Navbar>
+    <Navbar />
     <div class="container box spacer is-shadowless">
 
       <!-- Hero -->
@@ -42,7 +36,7 @@
         </div>
         <div class="columns">
           <div class="column is-5">
-            <Chart :tododata="userTodos" 
+            <Chart :tododata="userTodos"
               :type="'completedAtMonth'" 
               :title="'Completed by month'" 
               :color="'#4c90ff'">
@@ -72,9 +66,7 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Navbar from '@/components/Navbar';
-import MessagePopup from '@/components/MessagePopup';
 import Chart from '@/components/Account/Chart';
 import TileItem from '@/components/Account/Overview/InfoTilesItem';
 import CompletionTable from '@/components/Account/Overview/CompletionTable';
@@ -82,7 +74,6 @@ import CompletionTable from '@/components/Account/Overview/CompletionTable';
 export default {
   components: {
     Navbar,
-    MessagePopup,
     Chart,
     TileItem,
     CompletionTable,
@@ -92,18 +83,12 @@ export default {
   },
   data() {
     return {
-      userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
-      connectedUser: null,
       userTodos: [],
-      popupHide: true,
-      popupType: '',
-      popupMessage: '',
-      popupHeader: '',
     };
   },
   computed: {
     getEmail() {
-      return sessionStorage.getItem('email');
+      return this.$store.getters.getEmail;
     },
     countCompletedTasks() {
       return this.userTodos.filter(todo => todo.isCompleted).length;
@@ -119,18 +104,11 @@ export default {
   },
   methods: {
     getUser() {
-      axios.get(`${this.userBaseURL}/me`, {
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then((user) => {
-        this.connectedUser = {
-          email: user.data.email,
-          // More will be added to the User model
-        };
-        this.userTodos = user.data.todoList.todos;
+      this.$store.dispatch('loadProfileOverview').then((res) => {
+        console.log(res);
+        this.userTodos = res.data.todoList.todos;
       }).catch((e) => {
-        if (e.response.status === 401) {
+        if (e.status === 401) {
           this.$router.push('/');
         }
       });

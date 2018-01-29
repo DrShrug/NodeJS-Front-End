@@ -12,6 +12,8 @@
 </template>
 
 <script>
+/* DEPRECATED, NO LONGER USED */
+
 export default {
   props: {
     propsHide: Boolean,

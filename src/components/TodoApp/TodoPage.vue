@@ -1,9 +1,6 @@
 <template>
   <div id="page">
-    <MessagePopup :propsHide="popupHide"
-                :propsMessage="popupMessage"
-                :propsClass="popupType"
-                :propsHeader="popupHeader"></MessagePopup>
+    <MessagePopup></MessagePopup>
 
     <Navbar></Navbar>
     <div class="columns">
