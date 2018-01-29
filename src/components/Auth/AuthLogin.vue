@@ -42,7 +42,6 @@ export default {
     return {
       email: '',
       password: '',
-      userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
       loggingIn: false,
       loginErrorHidden: true,
     };
@@ -75,16 +74,12 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.box {
-  margin-top: 5rem;
-}
 input {
   font-weight: 300;
 }
 p.subtitle {
   padding-top: 1rem;
 }
-
 .bottom-margin {
   margin-bottom: 12px;
 }

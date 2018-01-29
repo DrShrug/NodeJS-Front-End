@@ -38,7 +38,7 @@
             <div class="navbar-dropdown is-right">
               <div class="navbar-item">
                 Signed in as<br>
-                {{ userEmail }}
+                {{ $store.getters.getEmail }}
               </div>
               <hr class="navbar-divider">
               <a class="navbar-item" href="/account/overview">
@@ -61,26 +61,11 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  data() {
-    return {
-      userEmail: sessionStorage.getItem('email'),
-      userBaseURL: 'https://nodejs-vue-js-todo.herokuapp.com/users',
-    };
-  },
   methods: {
     logout() {
-      axios.delete(`${this.userBaseURL}/me/logout`, {
-        headers: {
-          'x-auth': sessionStorage.getItem('token'),
-        },
-      }).then(() => {
-        sessionStorage.removeItem('token');
-        sessionStorage.removeItem('email');
+      this.$store.dispatch('userLogout').then(() => {
         this.$router.push('/');
-        // console.log(res.headers['x-auth']);
       });
     },
   },

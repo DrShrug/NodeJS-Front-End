@@ -13,7 +13,7 @@
     <div :class="{ 'is-hidden':hiddenOrEmpty }">
       <hr class="navbar-divider">
       <div class="column is-11 is-offset-1">
-        <TodoItem v-for="todo in todos" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+        <TodoItem v-for="todo in _.sortBy(todos, ['isCompleted', 'completeByTime'])" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
       </div>
     </div>
   </div>

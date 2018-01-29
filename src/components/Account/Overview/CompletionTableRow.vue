@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <th>{{ pos }}</th>
+    <th>{{ todo.categoryName }}</th>
     <td>{{ todo.task }}</td>
     <td>{{ completedOnTime }}</td>
     <td>{{ completedAt }}</td>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  props: ['todo', 'pos'],
+  props: ['todo'],
   computed: {
     completedAt() {
       const date = new Date(this.todo.completedAtTime);

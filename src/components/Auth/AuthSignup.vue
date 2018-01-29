@@ -89,9 +89,6 @@ export default {
 .hero.is-success {
   background:#272733;
 }
-.box {
-  margin-top: 5rem;
-}
 input {
   font-weight: 300;
 }

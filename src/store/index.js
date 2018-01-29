@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import createPersistedState from 'vuex-persistedstate';
 import router from '@/router';
 
 /* eslint-disable no-param-reassign */
@@ -13,6 +14,7 @@ import router from '@/router';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
+  plugins: [createPersistedState()],
   state: {
     todos: [],
     categories: [],
@@ -22,6 +24,7 @@ const store = new Vuex.Store({
       email: null,
       hideCompleted: false,
       isLoggedIn: false,
+      token: null,
     },
   },
   actions: {
@@ -60,6 +63,16 @@ const store = new Vuex.Store({
         });
       });
     },
+    userLogout({ commit }) {
+      return axios.delete(`${process.env.API_URL}/users/me/logout`, {
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+      }).then((res) => {
+        commit('logoutSuccess');
+        return res;
+      });
+    },
     deleteTodo({ commit, dispatch }, toDelete) {
       return axios({
         method: 'DELETE',
@@ -67,7 +80,7 @@ const store = new Vuex.Store({
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
       }).then((res) => {
         dispatch('loadTodosFromAPI');
@@ -81,7 +94,7 @@ const store = new Vuex.Store({
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
       }).then((res) => {
         dispatch('loadCategoriesFromAPI');
@@ -91,7 +104,7 @@ const store = new Vuex.Store({
     loadCategoriesFromAPI({ commit }) {
       return axios.get(`${process.env.API_URL}/categories`, {
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
       }).then((res) => {
         commit('setCategoryList', { categoriesData: res.data.categories });
@@ -101,7 +114,7 @@ const store = new Vuex.Store({
     loadTodosFromAPI({ commit }) {
       return axios.get(`${process.env.API_URL}/todos`, {
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
       }).then((response) => {
         commit('setTodoList', { todosData: response.data.todos });
@@ -115,11 +128,11 @@ const store = new Vuex.Store({
     loadProfileOverview({ commit }) {
       return axios.get(`${process.env.API_URL}/users/me`, {
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
       }).then((user) => {
         commit('setUserDetails', { userData: user.data });
-        return user.data;
+        return user;
       }).catch((e) => {
         if (e.response.status === 401) {
           router.push({ name: 'Auth' });
@@ -133,7 +146,7 @@ const store = new Vuex.Store({
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
         data: {
           categoryName,
@@ -150,7 +163,7 @@ const store = new Vuex.Store({
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
         data: {
           task,
@@ -170,7 +183,7 @@ const store = new Vuex.Store({
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
-          'x-auth': sessionStorage.getItem('token'),
+          'x-auth': store.getters.getToken,
         },
         data: {
           task: todoChanges.task,
@@ -199,10 +212,19 @@ const store = new Vuex.Store({
       categoriesData.forEach(category => state.categories.push(category));
     },
     loginSuccess(state, userData) {
-      sessionStorage.setItem('token', userData.token);
+      state.userLoggedIn.token = userData.token;
       state.userLoggedIn.name = 'To be implemented';
       state.userLoggedIn.email = userData.email;
       state.userLoggedIn.isLoggedIn = true;
+    },
+    logoutSuccess(state) {
+      state.todos = [];
+      state.categories = [];
+      state.userDetails = null;
+      state.userLoggedIn.hideCompleted = false;
+      state.userLoggedIn.isLoggedIn = false;
+      state.userLoggedIn.name = null;
+      state.userLoggedIn.email = null;
     },
   },
   getters: {
@@ -211,6 +233,9 @@ const store = new Vuex.Store({
     allTodos: state => state.todos,
     allCategories: state => state.categories,
     hideCompleted: state => state.userLoggedIn.hideCompleted,
+    getEmail: state => state.userLoggedIn.email,
+    getToken: state => state.userLoggedIn.token,
+    getUserDetails: state => state.userDetails,
   },
 });
 

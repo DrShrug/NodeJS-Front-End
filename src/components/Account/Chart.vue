@@ -8,7 +8,7 @@ export default {
   mixins: [mixins.reactiveProp],
   data() {
     return {
-      //
+      tododata: this.$store.getters.getUserDetails.todoList.todos,
     };
   },
   watch: {

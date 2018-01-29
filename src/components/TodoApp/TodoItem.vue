@@ -9,7 +9,7 @@
       </div>
 
       <div class="column is-5" @click="editMode = true">
-        <p v-if="!editMode" :class="{ 'has-text-danger' : checkIfLate }">{{ taskText }}</p> 
+        <p v-if="!editMode" :class="{ 'has-text-danger':checkIfLate, 'overline':todoObj.isCompleted }">{{ taskText }}</p> 
         <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendChangesToServer" @blur="sendChangesToServer">
       </div>
 
@@ -124,5 +124,8 @@ export default {
 }
 .icon:hover {
   cursor: pointer;
+}
+.overline {
+  text-decoration: line-through;
 }
 </style>
