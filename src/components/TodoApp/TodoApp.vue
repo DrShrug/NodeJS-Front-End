@@ -4,10 +4,12 @@
     <div class="box top-rounded-border">
       <div class="field is-grouped">
         <p class="control">
-          <a class="button is-primary" @click="$modal.show('createTodo')">Add new todo</a>
+          <input type="button" class="button is-primary" 
+            :disabled="$store.getters.allCategories.length <= 0" 
+            @click="$modal.show('createTodo')" value="Add new todo" />
         </p>
         <p class="control is-expanded">
-          <a class="button is-primary" @click="$modal.show('createCategory')">Add new category</a>
+          <input type="button" class="button is-primary" @click="$modal.show('createCategory')" value="Add new category" />
         </p>
         <p class="control">
           <a class="button noborder">

@@ -229,7 +229,7 @@ const store = new Vuex.Store({
   },
   getters: {
     openProjects: state => state.projects.filter(project => !project.isCompleted),
-    isLoggedIn: state => state.userLoggedIn.isLoggedIn && state.userLoggedIn.token !== '',
+    isLoggedIn: state => state.userLoggedIn.isLoggedIn && state.userLoggedIn.token !== null,
     allTodos: state => state.todos,
     allCategories: state => state.categories,
     hideCompleted: state => state.userLoggedIn.hideCompleted,

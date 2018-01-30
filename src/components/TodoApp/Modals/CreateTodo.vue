@@ -1,5 +1,5 @@
 <template>
-  <modalComp height="auto" name="createTodo" :adaptive="true" :scrollable="true">
+  <modalComp height="auto" name="createTodo">
       <header class="modal-card-head">
         <p class="modal-card-title">Add a new todo</p>
         <button class="delete" aria-label="close" @click="$modal.hide('createTodo')"></button>

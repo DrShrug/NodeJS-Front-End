@@ -26,7 +26,7 @@ export default {
     Signup,
   },
   mounted() {
-    if (sessionStorage.getItem('token') !== null) {
+    if (this.$store.getters.isLoggedIn) {
       this.$router.push('/todo');
     }
   },
