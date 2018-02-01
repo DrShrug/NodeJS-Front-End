@@ -18,6 +18,7 @@ const store = new Vuex.Store({
   state: {
     todos: [],
     categories: [],
+    language: 'en',
     userDetails: null,
     userLoggedIn: {
       name: null,
@@ -109,6 +110,10 @@ const store = new Vuex.Store({
       }).then((res) => {
         commit('setCategoryList', { categoriesData: res.data.categories });
         return res;
+      }).catch((e) => {
+        if (e.status === 401) {
+          router.push({ name: 'Auth' });
+        }
       });
     },
     loadTodosFromAPI({ commit }) {
@@ -195,10 +200,16 @@ const store = new Vuex.Store({
     switchCompletedVisiblity({ commit }) {
       commit('switchCompletedVisiblity');
     },
+    switchLanguage({ commit }, lang) {
+      commit('switchLanguage', lang);
+    },
   },
   mutations: {
     switchCompletedVisiblity(state) {
       state.userLoggedIn.hideCompleted = !state.userLoggedIn.hideCompleted;
+    },
+    switchLanguage(state, lang) {
+      state.language = lang;
     },
     setTodoList(state, { todosData }) {
       state.todos = [];
@@ -236,6 +247,7 @@ const store = new Vuex.Store({
     getEmail: state => state.userLoggedIn.email,
     getToken: state => state.userLoggedIn.token,
     getUserDetails: state => state.userDetails,
+    getLanguage: state => state.language,
   },
 });
 

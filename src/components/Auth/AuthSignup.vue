@@ -1,16 +1,14 @@
 <template>
   <div class="box biggerpaddingbox">
-    <h3 class="title has-text-grey">Sign up</h3>
-    <p class="subtitle has-text-grey">Start organising now</p>
+    <h3 class="title has-text-grey">{{ $t('signup') }}</h3>
+    <p class="subtitle has-text-grey">{{ $t('signup_message') }}</p>
     <hr>
 
     <form>
-      <p class="has-text-danger" :class="{ 'is-hidden' : signupErrorHidden }">
-        Error signing up
-      </p>
+      <p class="has-text-danger" :class="{ 'is-hidden' : signupErrorHidden }">{{ $t('signup_error') }}</p>
       <div class="field">
         <div class="control has-icons-left">
-          <input v-model="email" class="input is-primary is-medium" type="email" placeholder="Your Email" autofocus="">
+          <input v-model="email" class="input is-primary is-medium" type="email" :placeholder="$t('email_placeholder')" autofocus="">
           <span class="icon is-small is-left">
             <i class="fa fa-envelope"></i>
           </span>
@@ -19,7 +17,7 @@
 
       <div class="field">
         <div class="control has-icons-left">
-          <input v-model="password" class="input is-primary is-medium" type="password" placeholder="Your Password">
+          <input v-model="password" class="input is-primary is-medium" type="password" :placeholder="$t('pwd_placeholder')">
           <span class="icon is-small is-left">
             <i class="fa fa-lock"></i>
           </span>
@@ -28,23 +26,48 @@
 
       <div class="field">
         <div class="control has-icons-left">
-          <input v-model="passwordConfirm" class="input is-primary is-medium" type="password" placeholder="Confirm your Password">
+          <input v-model="passwordConfirm" class="input is-primary is-medium" type="password" :placeholder="$t('confirmPwd_placeholder')">
           <span class="icon is-small is-left">
             <i class="fa fa-lock"></i>
           </span>
         </div>
       </div>
 
-      <a @click="signup" :class="{ 'is-loading' : signingUp }" class="button is-block is-primary is-medium bottom-margin signupbtn">Sign up</a>
+      <a @click="signup" :class="{ 'is-loading' : signingUp }" class="button is-block is-primary is-medium bottom-margin signupbtn">{{ $t('signup') }}</a>
     </form>
 
     <hr>
     <div>
-      <p class="has-text-grey">Already have an account?</p> 
-      <a class="has-text-info" @click="switchMode">Sign in</a>
+      <p class="has-text-grey">{{ $t('login_question') }}</p> 
+      <a class="has-text-info" @click="switchMode">{{ $t('signin') }}</a>
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "signup": "Signup",
+    "signup_message": "Start organising now",
+    "signup_error": "Error while signing up",
+    "email_placeholder": "Email",
+    "pwd_placeholder": "Password",
+    "confirmPwd_placeholder": "Confirm password",
+    "login_question": "Already have an account?",
+    "signin": "Signin"
+  },
+  "fr": {
+    "signup": "S'inscrire",
+    "signup_message": "Commencez dès maintenant",
+    "signup_error": "Erreur lors de l'inscription",
+    "email_placeholder": "Adresse courriel",
+    "pwd_placeholder": "Mot de passe",
+    "confirmPwd_placeholder": "Confirmer mot de passe",
+    "login_question": "Avez-vous déjà un compte?",
+    "signin": "S'authentifier"
+  }
+}
+</i18n>
 
 <script>
 export default {

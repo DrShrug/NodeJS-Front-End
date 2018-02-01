@@ -6,10 +6,10 @@
         <p class="control">
           <input type="button" class="button is-primary" 
             :disabled="$store.getters.allCategories.length <= 0" 
-            @click="$modal.show('createTodo')" value="Add new todo" />
+            @click="$modal.show('createTodo')" :value="$t('btn_addTodo')" />
         </p>
         <p class="control is-expanded">
-          <input type="button" class="button is-primary" @click="$modal.show('createCategory')" value="Add new category" />
+          <input type="button" class="button is-primary" @click="$modal.show('createCategory')" :value="$t('btn_addCat')" />
         </p>
         <p class="control">
           <a class="button noborder">
@@ -39,6 +39,19 @@
   
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "btn_addTodo": "Add todo",
+    "btn_addCat": "Add category"
+  },
+  "fr": {
+    "btn_addTodo": "Ajouter une tâche",
+    "btn_addCat": "Ajouter une catégorie"
+  }
+}
+</i18n>
 
 <script>
 import TodoCategory from '@/components/TodoApp/TodoCategory';

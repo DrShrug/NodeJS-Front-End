@@ -16,7 +16,11 @@ Vue.use(VModal, { componentName: 'modalComp' });
 Vue.config.productionTip = false;
 
 const i18n = new VueI18n({
-  locale: 'en',
+  locale: store.getters.getLanguage,
+});
+
+store.watch(() => store.getters.getLanguage, (res) => {
+  i18n.locale = res;
 });
 
 /* eslint-disable no-new */

@@ -1,12 +1,12 @@
 <template>
   <modalComp height="auto" name="createCategory">
     <header class="modal-card-head">
-      <p class="modal-card-title">Create a new category</p>
+      <p class="modal-card-title">{{ $t('modal_title') }}</p>
       <button class="delete" aria-label="close" @click="closeModal"></button>
     </header>
     <section class="modal-card-body">
       <div class="field">
-        <label class="label">Category Name</label>
+        <label class="label">{{ $t('labelname') }}</label>
         <p class="control is-expanded has-icons-left">
           <input class="input" type="text" placeholder="Name" v-model="newCategoryName">
           <span class="icon is-small is-left">
@@ -16,11 +16,28 @@
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" @click="createNewCategory">Add Category</button>
-      <button class="button" @click="closeModal">Cancel</button>
+      <button class="button is-success" @click="createNewCategory">{{ $t('btn_addCat') }}</button>
+      <button class="button" @click="closeModal">{{ $t('cancel') }}</button>
     </footer>
   </modalComp>
 </template>
+
+<i18n>
+{
+  "en": {
+    "modal_title": "Create a new category",
+    "labelname": "Category name",
+    "btn_addCat": "Add category",
+    "cancel": "Cancel"
+  },
+  "fr": {
+    "modal_title": "Créer une nouvelle catégorie",
+    "labelname": "Nom de catégorie",
+    "btn_addCat": "Ajouter catégorie",
+    "cancel": "Annuler"
+  }
+}
+</i18n>
 
 <script>
 export default {

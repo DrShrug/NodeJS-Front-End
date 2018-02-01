@@ -10,10 +10,10 @@
           <div class="hero-body">
             <div class="container">
               <h1 class="title heroText">
-                Online Todo App
+                {{ $t('main_message') }}
               </h1>
               <h2 class="subtitle heroText">
-                Built with VueJS and NodeJS
+                {{ $t('main_subtitle') }}
               </h2>
             </div>
           </div>
@@ -27,6 +27,19 @@
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "main_message": "Online Todo App",
+    "main_subtitle": "Built with VueJS"
+  },
+  "fr": {
+    "main_message": "Gestion des tâches",
+    "main_subtitle": "Construite avec VueJS"
+  }
+}
+</i18n>
 
 <script>
 import Navbar from '@/components/Navbar';

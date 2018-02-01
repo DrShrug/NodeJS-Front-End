@@ -26,7 +26,7 @@
         </div>
       </div>
       <div class="column is-2">
-        <label class="checkbox is-pulled-right">Completed
+        <label class="checkbox is-pulled-right"> {{ $t('cb_completed') }}
           <input type="checkbox" v-model="todoObj.isCompleted" @change="sendChangesToServer">
         </label>
       </div>
@@ -38,6 +38,17 @@
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "cb_completed": "Completed"
+  },
+  "fr": {
+    "cb_completed": "Complété"
+  }
+}
+</i18n>
 
 <script>
 import DatePicker from 'vuejs-datepicker';

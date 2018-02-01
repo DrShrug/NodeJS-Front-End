@@ -3,11 +3,17 @@
     <section class="hero is-success is-fullheight">
       <div class="hero-body">
         <div class="container has-text-centered">
+          <div class="column is-4 login-block animated fadeOut fadeIn">
+            <div class="flag_box box">
+              <img class="flag" src="./../../assets/usa.png" alt="English" @click="changeLanguage('en')">
+              <img class="flag" src="./../../assets/france.png" alt="French" @click="changeLanguage('fr')">
+            </div>
+          </div>
           <div class="column is-4 login-block">
             <Login :class="{ 'is-hidden' : signupMode }" class="animated fadeOut fadeIn"></Login>
             <Signup :class="{ 'is-hidden' : !signupMode }" class="animated fadeOut fadeIn"></Signup>
             
-            <p class="has-text-light">Source code : 
+            <p class="has-text-light">{{ $t('github') }}
             <a class="has-text-info" href="https://github.com/" target="_blank">[Github]</a></p>
           </div>
         </div>
@@ -15,6 +21,17 @@
     </section>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "github": "Source code : "
+  },
+  "fr": {
+    "github": "Code source : "
+  }
+}
+</i18n>
 
 <script>
 import Login from '@/components/Auth/AuthLogin';
@@ -39,13 +56,22 @@ export default {
     switchModes() {
       this.signupMode = !this.signupMode;
     },
+    changeLanguage(lang) {
+      this.$store.dispatch('switchLanguage', lang);
+    },
   },
 };
 </script>
 
 <style scoped>
+.flag {
+  cursor: pointer;
+}
 .hero.is-success {
   background:#272733;
+}
+.flag_box {
+  padding: 0 5px 0 5px;
 }
 input {
   font-weight: 300;
