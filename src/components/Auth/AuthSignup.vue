@@ -96,7 +96,8 @@ export default {
           if (this.$store.getters.isLoggedIn) {
             this.$router.push('/todo');
           }
-        }).catch(() => {
+        }).catch((e) => {
+          console.log(e);
           this.signingUp = false;
           this.signupErrorHidden = false;
         });

@@ -3,6 +3,9 @@
     <section class="hero is-success is-fullheight">
       <div class="hero-body">
         <div class="container has-text-centered">
+          <h2 style="width:100%; text-align:center; border-bottom: 1px solid #dbdbdb; line-height:0.1em; margin:10px 0 20px;">
+            <span style="padding: 0 10px; background: #272733">Your groups</span>
+          </h2>
           <div class="column is-4" style="margin:auto">
             <div class="box groupbox">
               <div>
@@ -72,6 +75,8 @@
               </div>
             </div>
           </div>
+          <hr class="navbar-divider">
+          <input type="button" value="Create group" class="button is-success">
         </div>
       </div>
     </section>
