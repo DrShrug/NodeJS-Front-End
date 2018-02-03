@@ -54,9 +54,9 @@
               {{ $t('account') }}
             </a>
             <div class="navbar-dropdown is-right">
-              <div class="navbar-item">
-                {{ $t('acc_signedin') }}<br>
-                {{ $store.getters.getEmail }}
+              <div class="navbar-item loggedinContainer">
+                {{ $t('acc_signedin') }}<br/>
+                {{ $store.getters.getUsername }}
               </div>
               <hr class="navbar-divider">
               <a class="navbar-item" href="/account/overview">
@@ -134,5 +134,10 @@ export default {
 }
 .language_dropdown {
   min-width: 130px;
+}
+.loggedinContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
