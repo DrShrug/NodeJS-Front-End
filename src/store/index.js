@@ -21,7 +21,8 @@ const store = new Vuex.Store({
     language: 'en',
     userDetails: null,
     userLoggedIn: {
-      name: null,
+      username: null,
+      displayName: null,
       email: null,
       hideCompleted: false,
       isLoggedIn: false,
@@ -42,12 +43,14 @@ const store = new Vuex.Store({
       }).then((res) => {
         commit('loginSuccess', {
           email: res.data.email,
+          username: res.data.username,
+          displayName: res.data.displayName,
           token: res.headers['x-auth'],
         });
         return res;
       });
     },
-    userSignup({ commit }, { email, password }) {
+    userSignup({ commit }, { email, password, username, displayName }) {
       return axios({
         method: 'POST',
         url: `${process.env.API_URL}/users`,
@@ -56,10 +59,14 @@ const store = new Vuex.Store({
         data: {
           email,
           password,
+          username,
+          displayName,
         },
       }).then((res) => {
         commit('loginSuccess', {
           email: res.data.email,
+          username: res.data.username,
+          displayName: res.data.displayName,
           token: res.headers['x-auth'],
         });
       });
@@ -224,8 +231,9 @@ const store = new Vuex.Store({
     },
     loginSuccess(state, userData) {
       state.userLoggedIn.token = userData.token;
-      state.userLoggedIn.name = 'To be implemented';
+      state.userLoggedIn.username = userData.username;
       state.userLoggedIn.email = userData.email;
+      state.userLoggedIn.displayName = userData.displayName;
       state.userLoggedIn.isLoggedIn = true;
     },
     logoutSuccess(state) {
@@ -234,7 +242,8 @@ const store = new Vuex.Store({
       state.userDetails = null;
       state.userLoggedIn.hideCompleted = false;
       state.userLoggedIn.isLoggedIn = false;
-      state.userLoggedIn.name = null;
+      state.userLoggedIn.username = null;
+      state.userLoggedIn.displayName = null;
       state.userLoggedIn.email = null;
     },
   },
@@ -245,6 +254,8 @@ const store = new Vuex.Store({
     allCategories: state => state.categories,
     hideCompleted: state => state.userLoggedIn.hideCompleted,
     getEmail: state => state.userLoggedIn.email,
+    getUsername: state => state.userLoggedIn.username,
+    getDisplayName: state => state.userLoggedIn.displayName,
     getToken: state => state.userLoggedIn.token,
     getUserDetails: state => state.userDetails,
     getLanguage: state => state.language,

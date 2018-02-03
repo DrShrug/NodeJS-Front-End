@@ -17,6 +17,24 @@
 
       <div class="field">
         <div class="control has-icons-left">
+          <input v-model="username" class="input is-primary is-medium" :placeholder="$t('username_placeholder')">
+          <span class="icon is-small is-left">
+            <i class="fa fa-user"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control has-icons-left">
+          <input v-model="displayName" class="input is-primary is-medium" :placeholder="$t('display_placeholder')">
+          <span class="icon is-small is-left">
+            <i class="fa fa-id-card"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="control has-icons-left">
           <input v-model="password" class="input is-primary is-medium" type="password" :placeholder="$t('pwd_placeholder')">
           <span class="icon is-small is-left">
             <i class="fa fa-lock"></i>
@@ -51,6 +69,8 @@
     "signup_message": "Start organising now",
     "signup_error": "Error while signing up",
     "email_placeholder": "Email",
+    "display_placeholder": "Display name",
+    "username_placeholder": "Username",
     "pwd_placeholder": "Password",
     "confirmPwd_placeholder": "Confirm password",
     "login_question": "Already have an account?",
@@ -61,6 +81,8 @@
     "signup_message": "Commencez dès maintenant",
     "signup_error": "Erreur lors de l'inscription",
     "email_placeholder": "Adresse courriel",
+    "display_placeholder": "Nom d'affichage",
+    "username_placeholder": "Nom d'utilisateur",
     "pwd_placeholder": "Mot de passe",
     "confirmPwd_placeholder": "Confirmer mot de passe",
     "login_question": "Avez-vous déjà un compte?",
@@ -75,6 +97,8 @@ export default {
     return {
       email: '',
       password: '',
+      displayName: '',
+      username: '',
       passwordConfirm: '',
       signingUp: false,
       signupErrorHidden: true,
@@ -90,6 +114,8 @@ export default {
         this.$store.dispatch('userSignup', {
           email: this.email,
           password: this.password,
+          username: this.username,
+          displayName: this.displayName,
         }).then(() => {
           this.signingUp = false;
           this.signupErrorHidden = true;
