@@ -120,7 +120,7 @@ export default {
           this.signingUp = false;
           this.signupErrorHidden = true;
           if (this.$store.getters.isLoggedIn) {
-            this.$router.push('/todo');
+            this.$router.push('/groups');
           }
         }).catch((e) => {
           console.log(e);

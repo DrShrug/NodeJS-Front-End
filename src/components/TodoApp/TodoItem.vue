@@ -1,5 +1,5 @@
 <template>
-  <div class="box" :class="{ 'is-hidden' : checkConditionsToHide }">
+  <div class="box smooth-in" :class="{ 'is-hidden' : checkConditionsToHide }">
     <div class="columns center-content">
 
       <div class="column is-2">
@@ -92,6 +92,7 @@ export default {
   },
   methods: {
     setNewDateLimit(newTime) {
+      this.todoObj.completeByTime = newTime;
       this.completeBeforeDate = newTime.getTime();
       this.sendChangesToServer();
     },

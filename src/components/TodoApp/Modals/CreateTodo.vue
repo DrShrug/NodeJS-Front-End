@@ -70,7 +70,6 @@ export default {
       taskToAdd: '',
       limitToAdd: '',
       categoryId: '',
-      categoryName: '',
       test: ['1'],
     };
   },
@@ -79,12 +78,11 @@ export default {
       this.test.push('test');
     },
     addTodo() {
-      if (this.taskToAdd !== '' && this.limitToAdd !== '' && this.categoryId !== '' && this.categoryName !== '') {
+      if (this.taskToAdd !== '' && this.limitToAdd !== '' && this.categoryId !== '') {
         this.$store.dispatch('newTodo', {
           task: this.taskToAdd,
           completeByTime: this.limitToAdd.getTime(),
           categoryId: this.categoryId,
-          categoryName: this.categoryName,
         }).then(() => {
           this.$notify({
             type: 'success',
@@ -109,7 +107,6 @@ export default {
     },
     setCategory(category) {
       this.categoryId = category.id;
-      this.categoryName = category.name;
     },
   },
 };

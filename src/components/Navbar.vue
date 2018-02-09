@@ -1,7 +1,14 @@
 <template>
-    <nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
-    <div class="container is-fluid">
-
+  <nav class="navbar has-shadow" role="navigation" aria-label="dropdown navigation">
+    <div class="container is-fluid nomarginleft">
+      <div class="navbar-item sidemenu-opener" @click="$store.dispatch('openSideMenu')">
+        <span v-if="!$store.getters.openSideMenu" class="icon is-medium">
+          <i class="fa fa-lg fa-bars"></i>
+        </span>
+        <span v-if="$store.getters.openSideMenu" class="icon is-medium">
+          <i class="fa fa-lg fa-times"></i>
+        </span>
+      </div>
       <div class="navbar-brand">
         <a class="navbar-item" href="/todo">
           <img src="../../static/favicon.png" alt="Logo">
@@ -17,7 +24,7 @@
 
       <div class="navbar-menu" id="menu">
         <div class="navbar-start">
-          <a class="navbar-item">
+          <a class="navbar-item" href="/groups">
             {{ $t('switch_group') }}
           </a>
         </div>
@@ -135,9 +142,15 @@ export default {
 .language_dropdown {
   min-width: 130px;
 }
+.sidemenu-opener:hover {
+  cursor: pointer;
+}
 .loggedinContainer {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.nomarginleft {
+  margin-left: 0;
 }
 </style>

@@ -117,7 +117,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
   #profile-overview {
     background-color: #F5F6F7;
   }

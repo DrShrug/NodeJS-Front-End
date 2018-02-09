@@ -83,7 +83,7 @@ export default {
         this.loggingIn = false;
         this.loginErrorHidden = true;
         if (this.$store.getters.isLoggedIn) {
-          this.$router.push('/todo');
+          this.$router.push('/groups');
         }
       }).catch(() => {
         this.loggingIn = false;

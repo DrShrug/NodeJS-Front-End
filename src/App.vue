@@ -4,14 +4,18 @@
     <notifications :max="3" :duration="1000" position="bottom right" />
     <createTodoModal />
     <createCategoryModal />
+    <createGroupModal />
     <deleteTodoModal />
     <deleteCategoryModal />
+    <sidemenu />
+
   </div>
 </template>
 
 <script>
   import createTodoModal from '@/components/TodoApp/Modals/CreateTodo';
   import createCategoryModal from '@/components/TodoApp/Modals/CreateCategory';
+  import createGroupModal from '@/components/Group/CreateGroup';
   import deleteTodoModal from '@/components/TodoApp/Modals/DeleteTodo';
   import deleteCategoryModal from '@/components/TodoApp/Modals/DeleteCategory';
   import 'font-awesome/css/font-awesome.css';
@@ -23,6 +27,7 @@
     components: {
       createTodoModal,
       createCategoryModal,
+      createGroupModal,
       deleteTodoModal,
       deleteCategoryModal,
     },
@@ -30,11 +35,18 @@
 </script>
 
 <style>
+html, body, #app, #page, #main-container {
+  height: 100%;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.sidemenu-relative {
+  position: relative;
 }
 </style>
