@@ -14,7 +14,7 @@
             <div class="media">
               <div class="media-left">
                 <div class="image is-48x48">
-                  <img src="https://pbs.twimg.com/profile_images/819272484256174085/-Er2nVOp_400x400.jpg">
+                  <img src="https://cdn.discordapp.com/attachments/230447861043560448/412321950040326155/doot_transparent.png">
                 </div>
               </div>
               <div class="media-content">

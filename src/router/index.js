@@ -8,6 +8,7 @@ import Groups from '@/components/Group/GroupList';
 import GroupOverview from '@/components/Group/GroupOverview';
 import AddMemberGroup from '@/components/Group/AddMemberPage';
 import RemoveMember from '@/components/Group/RemoveMemberPage';
+import store from './../store';
 
 Vue.use(Router);
 
@@ -82,6 +83,7 @@ const router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+  store.dispatch('forceCloseSidemenu');
   document.title = to.meta.title;
   next();
 });

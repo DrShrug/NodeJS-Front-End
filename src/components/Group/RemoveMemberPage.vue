@@ -8,7 +8,7 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
           <ul>
             <li>
-              <a href="#">
+              <a href="/todo">
                 <span class="icon is-small">
                   <i class="fa fa-list-ul"></i>
                 </span>
@@ -16,7 +16,7 @@
               </a>
             </li>
             <li>
-              <a href="#">
+              <a href="/group/overview">
                 <span class="icon is-small">
                   <i class="fa fa-users"></i>
                 </span>

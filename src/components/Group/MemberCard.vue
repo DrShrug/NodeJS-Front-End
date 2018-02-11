@@ -8,13 +8,13 @@
       </div>
       <div class="media-content">
         <span class="is-size-5">{{ user.username }}</span>
-        <small class="has-text-grey">{{ user.username }}</small>
+        <small class="has-text-grey">{{ user.displayName }}</small>
         <br>
         <small>
-          {{ user.username }}
+          {{ user.email }}
         </small>
       </div>
-      <div class="media-right" :class="{ 'is-hidden':user._id === $store.getters.getSelectedGroupObject._owner }">
+      <div class="media-right" :class="{ 'is-hidden':isOwnerOrSelf }">
         <button class="delete" @click="removeUser" />
       </div>
     </div>
@@ -22,9 +22,15 @@
 </template>
 
 <script>
-/* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+/* eslint no-underscore-dangle: 0 */
 export default {
   props: ['user'],
+  computed: {
+    isOwnerOrSelf() {
+      return this.user._id === this.$store.getters.getSelectedGroupObject._owner
+      || this.user._id === this.$store.getters.getSelfId;
+    },
+  },
   methods: {
     removeUser() {
       this.$store.dispatch('removeMemberFromGroup', { memberId: this.user._id }).then((res) => {

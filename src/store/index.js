@@ -24,6 +24,7 @@ const store = new Vuex.Store({
     language: 'en',
     userDetails: null,
     userLoggedIn: {
+      _id: null,
       username: null,
       displayName: null,
       email: null,
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
         },
       }).then((res) => {
         commit('loginSuccess', {
+          _id: res.data._id,
           email: res.data.email,
           username: res.data.username,
           displayName: res.data.displayName,
@@ -68,6 +70,7 @@ const store = new Vuex.Store({
         },
       }).then((res) => {
         commit('loginSuccess', {
+          _id: res.data._id,
           email: res.data.email,
           username: res.data.username,
           displayName: res.data.displayName,
@@ -116,6 +119,9 @@ const store = new Vuex.Store({
     },
     setGroup({ commit }, { groupId }) {
       commit('currentlySelectedGroup', { groupId });
+    },
+    removeGroupSelection({ commit }) {
+      commit('removeGroupSelection');
     },
     deleteTodo({ commit, dispatch }, toDelete) {
       return axios({
@@ -295,10 +301,16 @@ const store = new Vuex.Store({
     openSideMenu({ commit }) {
       commit('toggleSideMenu');
     },
+    forceCloseSidemenu({ commit }) {
+      commit('closeSideMenu');
+    },
   },
   mutations: {
     toggleSideMenu(state) {
       state.openSideMenu = !state.openSideMenu;
+    },
+    closeSideMenu(state) {
+      state.openSideMenu = false;
     },
     switchCompletedVisiblity(state) {
       state.userLoggedIn.hideCompleted = !state.userLoggedIn.hideCompleted;
@@ -313,6 +325,11 @@ const store = new Vuex.Store({
       for (const key in state.userLoggedIn.selectedGroup) {
         state.userLoggedIn.selectedGroup[key] = null;
       }
+    },
+    removeGroupSelection(state) {
+      state.userLoggedIn.selectedGroup = null;
+      state.categories = [];
+      state.todos = [];
     },
     addGroup(state, { group }) {
       state.groups.push(group);
@@ -347,6 +364,7 @@ const store = new Vuex.Store({
       categoriesData.forEach(category => state.categories.push(category));
     },
     loginSuccess(state, userData) {
+      state.userLoggedIn._id = userData._id;
       state.userLoggedIn.token = userData.token;
       state.userLoggedIn.username = userData.username;
       state.userLoggedIn.email = userData.email;
@@ -376,6 +394,7 @@ const store = new Vuex.Store({
     allCategories: state => state.categories,
     hideCompleted: state => state.userLoggedIn.hideCompleted,
     getUsers: state => state.users,
+    getSelfId: state => state.userLoggedIn._id,
     getEmail: state => state.userLoggedIn.email,
     getUsername: state => state.userLoggedIn.username,
     getDisplayName: state => state.userLoggedIn.displayName,
