@@ -1,6 +1,5 @@
 <template>
   <section>
-    <p class="content"><b>Selected:</b> {{ selected }}</p>
     <b-field label="Find a name">
         <b-autocomplete
           v-model="username"
@@ -40,7 +39,6 @@ export default {
     return {
       username: '',
       selected: null,
-      users: this.$store.getters.getUsers,
     };
   },
   watch: {
@@ -62,12 +60,8 @@ export default {
     });
   },
   computed: {
-    usersNotInGroup() {
-      return this.users.filter(user =>
-      this.$store.getters.getSelectedGroupObject.members.indexOf(user._id) === -1);
-    },
     userFormat() {
-      return this.usersNotInGroup.filter(option =>
+      return this.$store.getters.getUsersNotInGroup.filter(option =>
         option.username
           .toString()
           .toLowerCase()

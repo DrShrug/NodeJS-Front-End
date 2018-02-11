@@ -122,8 +122,7 @@ export default {
           if (this.$store.getters.isLoggedIn) {
             this.$router.push('/groups');
           }
-        }).catch((e) => {
-          console.log(e);
+        }).catch(() => {
           this.signingUp = false;
           this.signupErrorHidden = false;
         });

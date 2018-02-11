@@ -31,7 +31,11 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch('getGroups');
+    this.$store.dispatch('getGroups').then((res) => {
+      if (res.response.status !== 200) {
+        this.$router.push('/');
+      }
+    });
   },
   methods: {
     selectGroup(group) {

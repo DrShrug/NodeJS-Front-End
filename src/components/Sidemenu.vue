@@ -6,7 +6,7 @@
         <div class="slideout-menu-item">Dashboard</div>
         <div class="slideout-menu-item flex-container">
           <figure class="image is-96x96">
-            <img class="round-image" src="https://pbs.twimg.com/profile_images/819272484256174085/-Er2nVOp_400x400.jpg">
+            <img class="round-image" src="https://cdn.discordapp.com/attachments/230447861043560448/412321950040326155/doot_transparent.png">
           </figure>
         </div>
         <div class="slideout-menu-item">
@@ -38,13 +38,13 @@
             </span>
               Add member
             </li>
-            <li class="submenu-item">
+            <li class="submenu-item" @click="$router.push('/group/removeMember')">
               <span class="icon is-pulled-left">
                 <i class="fa fa-user-times" aria-hidden="true" />
               </span>
               Remove member
             </li>
-            <li class="submenu-item">
+            <li class="submenu-item" @click="$modal.show('deleteGroup')">
               <span class="icon is-pulled-left">
                 <i class="fa fa-trash" aria-hidden="true" />
               </span>

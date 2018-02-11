@@ -105,7 +105,6 @@ export default {
   methods: {
     getUser() {
       this.$store.dispatch('loadProfileOverview').then((res) => {
-        console.log(res);
         this.userTodos = res.data.todoList.todos;
       }).catch((e) => {
         if (e.status === 401) {

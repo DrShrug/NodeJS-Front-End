@@ -7,7 +7,7 @@
     <createGroupModal />
     <deleteTodoModal />
     <deleteCategoryModal />
-    <sidemenu />
+    <deleteGroupModal v-if="$store.getters.getSelectedGroupObject" />
 
   </div>
 </template>
@@ -18,6 +18,7 @@
   import createGroupModal from '@/components/Group/CreateGroup';
   import deleteTodoModal from '@/components/TodoApp/Modals/DeleteTodo';
   import deleteCategoryModal from '@/components/TodoApp/Modals/DeleteCategory';
+  import deleteGroupModal from '@/components/Group/DeleteGroupModal';
   import 'font-awesome/css/font-awesome.css';
   import './assets/bulma.sass';
   
@@ -30,6 +31,7 @@
       createGroupModal,
       deleteTodoModal,
       deleteCategoryModal,
+      deleteGroupModal,
     },
   };
 </script>

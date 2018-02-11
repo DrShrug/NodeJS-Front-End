@@ -52,26 +52,6 @@ export default {
     TodoApp,
     Sidemenu,
   },
-  data() {
-    return {
-      popupHide: true,
-      popupType: '',
-      popupMessage: '',
-      popupHeader: '',
-    };
-  },
-  methods: {
-    updateDBPopup(message, popupType, header) {
-      this.popupHide = false;
-      this.popupType = popupType;
-      this.popupMessage = message;
-      this.popupHeader = header;
-      setTimeout(this.closePopup, 2000);
-    },
-    closePopup() {
-      this.popupHide = true;
-    },
-  },
 };
 </script>
 

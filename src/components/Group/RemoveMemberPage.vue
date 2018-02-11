@@ -4,6 +4,7 @@
     <div class="sidemenu-relative">
       <Sidemenu ref="sidemenu" class="sidemenu" />
       <div class="container box spacer is-shadowless sidemenu-relative">
+
         <nav class="breadcrumb" aria-label="breadcrumbs">
           <ul>
             <li>
@@ -27,7 +28,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-user-plus"></i>
                 </span>
-                <span>Add Members</span>
+                <span>Remove Members</span>
               </a>
             </li>
           </ul>
@@ -35,11 +36,11 @@
         
         <section class="info-tiles box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Add Members</p>
+            <p class="has-text-grey-dark is-size-4">Remove Members</p>
+            <p class="has-text-grey is-size-6">{{ $store.getters.getSelectedGroupObject.groupName }}</p>
             <hr class="navbar-divider half-size">
           </div>
-          <AddMember @setUserToAdd="setUser" />
-          <button class="btn-spacing button is-success" @click="addUserToGroup">Add User</button>
+          <RemoveMember />
         </section>
       </div>
     </div>
@@ -49,18 +50,29 @@
 <script>
 import Navbar from '@/components/Navbar';
 import Sidemenu from '@/components/Sidemenu';
-import AddMember from '@/components/Group/AddMember';
+import RemoveMember from '@/components/Group/RemoveMember';
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 export default {
   components: {
     Navbar,
     Sidemenu,
-    AddMember,
+    RemoveMember,
   },
   data: () => ({
     userSelected: null,
   }),
+  mounted() {
+    this.$store.dispatch('loadUsersFromAPI').then((res) => {
+      if (res.status !== 200) {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: 'Error while fetching users',
+        });
+      }
+    });
+  },
   methods: {
     setUser(user) {
       this.userSelected = user;

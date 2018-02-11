@@ -37,8 +37,7 @@
     </div>
     <!-- Footer -->
     <div class="boxSetMargin bottom-rounded-border">
-      <input type="text" class="input" v-model="idToAdd">
-      <button class="button is-success" @click="addMember()">Add</button>
+      Nothing to see here
     </div>
   
   </div>
@@ -72,7 +71,7 @@ export default {
     };
   },
   created() {
-    if (this.$store.getters.getSelectedGroup) {
+    if (this.$store.getters.getSelectedGroupObject) {
       this.$store.dispatch('loadCategoriesFromAPI');
       this.$store.dispatch('loadTodosFromAPI');
     } else {
@@ -97,9 +96,6 @@ export default {
     },
   },
   methods: {
-    addMember() {
-      this.$store.dispatch('addMemberToGroup', { memberId: this.idToAdd });
-    },
     reloadData() {
       this.reloadDataInProgress = true;
       this.$store.dispatch('loadCategoriesFromAPI').then(() => {

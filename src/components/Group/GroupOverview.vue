@@ -19,7 +19,7 @@
         <!-- Quick information overview -->
         <section class="info-tiles box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Add Members</p>
+            <p class="has-text-grey-dark is-size-4">Info</p>
             <hr class="navbar-divider half-size">
           </div>
         </section>
@@ -27,7 +27,7 @@
         <!-- Charts and graphs -->
         <div class="box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Remove Members</p>
+            <p class="has-text-grey-dark is-size-4">More info</p>
             <hr class="navbar-divider half-size">
           </div>
         </div>
@@ -35,7 +35,7 @@
         <!-- Completion details -->
         <div class="box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Completed Tasks Info</p>
+            <p class="has-text-grey-dark is-size-4">Lots of info</p>
             <hr class="navbar-divider half-size">
           </div>
         </div>

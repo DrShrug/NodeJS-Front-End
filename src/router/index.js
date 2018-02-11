@@ -7,6 +7,7 @@ import Test from '@/components/Tests/Main';
 import Groups from '@/components/Group/GroupList';
 import GroupOverview from '@/components/Group/GroupOverview';
 import AddMemberGroup from '@/components/Group/AddMemberPage';
+import RemoveMember from '@/components/Group/RemoveMemberPage';
 
 Vue.use(Router);
 
@@ -35,6 +36,14 @@ const router = new Router({
       component: AddMemberGroup,
       meta: {
         title: 'Todo App - Add Member',
+      },
+    },
+    {
+      path: '/group/removeMember',
+      name: 'RemoveMember',
+      component: RemoveMember,
+      meta: {
+        title: 'Todo App - Remove Member',
       },
     },
     {

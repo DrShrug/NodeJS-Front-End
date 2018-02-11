@@ -98,7 +98,6 @@ const store = new Vuex.Store({
           groupName,
         },
       }).then((res) => {
-        console.log(res.data);
         commit('addGroup', res.data);
         return res;
       });
@@ -111,10 +110,9 @@ const store = new Vuex.Store({
           'x-auth': store.getters.getToken,
         },
       }).then((res) => {
-        console.log(res.data);
         commit('setGroups', { groups: res.data });
         return res;
-      });
+      }).catch(res => res);
     },
     setGroup({ commit }, { groupId }) {
       commit('currentlySelectedGroup', { groupId });
@@ -184,7 +182,6 @@ const store = new Vuex.Store({
         commit('setUserList', { usersData: response.data.users });
         return response;
       }).catch((e) => {
-        console.log(e);
         if (e.response.status === 401) {
           router.push({ name: 'Auth' });
         }
@@ -254,8 +251,38 @@ const store = new Vuex.Store({
           userIdToAdd: memberId,
         },
       }).then((res) => {
-        dispatch('loadUsersFromAPI');
-        dispatch('getGroups');
+        commit('addMemberToGroup', { memberId });
+        return res;
+      });
+    },
+    removeMemberFromGroup({ commit, dispatch }, { memberId }) {
+      return axios({
+        method: 'PATCH',
+        url: `${process.env.API_URL}/groups/removemember/${store.getters.getSelectedGroup}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+        data: {
+          userIdToRemove: memberId,
+        },
+      }).then((res) => {
+        commit('removeMemberFromGroup', { memberId });
+        return res;
+      });
+    },
+    deleteGroup({ commit }, { groupId }) {
+      return axios({
+        method: 'DELETE',
+        url: `${process.env.API_URL}/groups/${store.getters.getSelectedGroup}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+      }).then((res) => {
+        commit('removeGroup', { groupId });
         return res;
       });
     },
@@ -279,8 +306,23 @@ const store = new Vuex.Store({
     switchLanguage(state, lang) {
       state.language = lang;
     },
+    removeGroup(state, { groupId }) {
+      /* eslint no-restricted-syntax: 0 */
+      /* eslint guard-for-in: 0 */
+      state.groups.filter(group => group._id !== groupId);
+      for (const key in state.userLoggedIn.selectedGroup) {
+        state.userLoggedIn.selectedGroup[key] = null;
+      }
+    },
     addGroup(state, { group }) {
       state.groups.push(group);
+    },
+    addMemberToGroup(state, { memberId }) {
+      state.userLoggedIn.selectedGroup.members.push(memberId);
+    },
+    removeMemberFromGroup(state, { memberId }) {
+      state.userLoggedIn.selectedGroup.members =
+        state.userLoggedIn.selectedGroup.members.filter(user => user !== memberId);
     },
     currentlySelectedGroup(state, { groupId }) {
       state.userLoggedIn.selectedGroup = groupId;
@@ -322,6 +364,9 @@ const store = new Vuex.Store({
       state.userLoggedIn.displayName = null;
       state.userLoggedIn.email = null;
       state.userLoggedIn.selectedGroup = null;
+      // for (const key in state.userLoggedIn.selectedGroup) {
+      //   state.userLoggedIn.selectedGroup[key] = null;
+      // }
     },
   },
   getters: {
@@ -340,6 +385,10 @@ const store = new Vuex.Store({
     getGroups: state => state.groups,
     getSelectedGroup: state => state.userLoggedIn.selectedGroup._id,
     getSelectedGroupObject: state => state.userLoggedIn.selectedGroup,
+    getUsersNotInGroup: (state, getters) => state.users.filter(user =>
+      getters.getSelectedGroupObject.members.indexOf(user._id) === -1),
+    getUsersInGroup: (state, getters) => state.users.filter(user =>
+      getters.getSelectedGroupObject.members.indexOf(user._id) >= 0),
     openSideMenu: state => state.openSideMenu,
   },
 });
