@@ -1,11 +1,9 @@
 <template>
   <div id="page">
-    <MessagePopup></MessagePopup>
-
-    <Navbar></Navbar>
-    <div class="columns">
-      <div class="column">
-        <!-- Hero Header -->
+    <Navbar />
+    <div class="sidemenu-relative">
+      <Sidemenu ref="sidemenu" class="sidemenu" />
+      <div id="main-container">
         <section class="hero landingSection">
           <div class="hero-body">
             <div class="container">
@@ -19,13 +17,14 @@
           </div>
         </section>
 
-        <!-- Todo application -->
         <div class="container box is-shadowless todoApp">
-          <TodoApp></TodoApp>
+          <TodoApp />
         </div>
       </div>
+      
     </div>
   </div>
+  
 </template>
 
 <i18n>
@@ -44,34 +43,14 @@
 <script>
 import Navbar from '@/components/Navbar';
 import TodoApp from '@/components/TodoApp/TodoApp';
-import MessagePopup from '@/components/MessagePopup';
+import Sidemenu from '@/components/Sidemenu';
 
 export default {
   name: 'TodoPage',
   components: {
     Navbar,
     TodoApp,
-    MessagePopup,
-  },
-  data() {
-    return {
-      popupHide: true,
-      popupType: '',
-      popupMessage: '',
-      popupHeader: '',
-    };
-  },
-  methods: {
-    updateDBPopup(message, popupType, header) {
-      this.popupHide = false;
-      this.popupType = popupType;
-      this.popupMessage = message;
-      this.popupHeader = header;
-      setTimeout(this.closePopup, 2000);
-    },
-    closePopup() {
-      this.popupHide = true;
-    },
+    Sidemenu,
   },
 };
 </script>
@@ -82,21 +61,24 @@ export default {
 }
 
 .landingSection {
-    background: linear-gradient(141deg,#04a6d7 0,#209cee 71%,#3287f5 100%);
+  background: linear-gradient(141deg,#04a6d7 0,#209cee 71%,#3287f5 100%);
 }
 
 .heroText{
-    color:white;
+  color:white;
 }
 
 .todoApp {
   background: transparent;
   margin-top: 0;
 }
-
+.tile-header {
+    margin-bottom: 20px;
+    width: 50%;
+  }
 .sidemenu {
-  background: #2F3C53;
-  color: white;
-  height: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 10;
 }
 </style>

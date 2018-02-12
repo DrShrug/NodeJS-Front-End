@@ -1,5 +1,5 @@
 <template>
-  <div class="box is-borderless boxMarginFix">
+  <div class="box is-borderless boxMarginFix smooth-in">
     <p class="has-text-grey-dark is-size-4 has-text-left">
       <span class="categoryName is-unselectable" @click="switchVisibility">
         {{category.categoryName}}
@@ -13,7 +13,12 @@
     <div :class="{ 'is-hidden':hiddenOrEmpty }">
       <hr class="navbar-divider">
       <div class="column is-11 is-offset-1">
-        <TodoItem v-for="todo in _.sortBy(todos, ['isCompleted', 'completeByTime'])" :todoObj="todo" class="is-marginless is-radiusless" :key="todo._id"></TodoItem>
+        <transition-group name="list" mode="out-in">
+          <TodoItem v-for="todo in _.sortBy(todos, ['isCompleted', 'completeByTime'])" 
+          :todoObj="todo" 
+          class="is-marginless is-radiusless" 
+          :key="todo._id" />
+        </transition-group>
       </div>
     </div>
   </div>
@@ -47,11 +52,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .boxMarginFix {
   margin-top: 0;
 }
 .categoryName {
   cursor: pointer;
+}
+.smooth-in {
+  transition: all .5s ease-in-out;
 }
 </style>

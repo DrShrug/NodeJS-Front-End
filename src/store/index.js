@@ -18,12 +18,17 @@ const store = new Vuex.Store({
   state: {
     todos: [],
     categories: [],
+    groups: [],
+    users: [],
+    openSideMenu: false,
     language: 'en',
     userDetails: null,
     userLoggedIn: {
+      _id: null,
       username: null,
       displayName: null,
       email: null,
+      selectedGroup: null,
       hideCompleted: false,
       isLoggedIn: false,
       token: null,
@@ -42,6 +47,7 @@ const store = new Vuex.Store({
         },
       }).then((res) => {
         commit('loginSuccess', {
+          _id: res.data._id,
           email: res.data.email,
           username: res.data.username,
           displayName: res.data.displayName,
@@ -64,6 +70,7 @@ const store = new Vuex.Store({
         },
       }).then((res) => {
         commit('loginSuccess', {
+          _id: res.data._id,
           email: res.data.email,
           username: res.data.username,
           displayName: res.data.displayName,
@@ -80,6 +87,41 @@ const store = new Vuex.Store({
         commit('logoutSuccess');
         return res;
       });
+    },
+    createGroup({ commit }, { groupName }) {
+      return axios({
+        method: 'POST',
+        url: `${process.env.API_URL}/groups`,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+        data: {
+          groupName,
+        },
+      }).then((res) => {
+        commit('addGroup', res.data);
+        return res;
+      });
+    },
+    getGroups({ commit }) {
+      return axios.get(`${process.env.API_URL}/groups`, {
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+      }).then((res) => {
+        commit('setGroups', { groups: res.data });
+        return res;
+      }).catch(res => res);
+    },
+    setGroup({ commit }, { groupId }) {
+      commit('currentlySelectedGroup', { groupId });
+    },
+    removeGroupSelection({ commit }) {
+      commit('removeGroupSelection');
     },
     deleteTodo({ commit, dispatch }, toDelete) {
       return axios({
@@ -98,7 +140,7 @@ const store = new Vuex.Store({
     deleteCategory({ commit, dispatch }, toDelete) {
       return axios({
         method: 'DELETE',
-        url: `${process.env.API_URL}/categories/${toDelete}`,
+        url: `${process.env.API_URL}/${store.getters.getSelectedGroup}/categories/${toDelete}`,
         dataType: 'json',
         contentType: 'application/json; charset=utf-8',
         headers: {
@@ -110,7 +152,7 @@ const store = new Vuex.Store({
       });
     },
     loadCategoriesFromAPI({ commit }) {
-      return axios.get(`${process.env.API_URL}/categories`, {
+      return axios.get(`${process.env.API_URL}/${store.getters.getSelectedGroup}/categories`, {
         headers: {
           'x-auth': store.getters.getToken,
         },
@@ -124,7 +166,7 @@ const store = new Vuex.Store({
       });
     },
     loadTodosFromAPI({ commit }) {
-      return axios.get(`${process.env.API_URL}/todos`, {
+      return axios.get(`${process.env.API_URL}/${store.getters.getSelectedGroup}/todos`, {
         headers: {
           'x-auth': store.getters.getToken,
         },
@@ -137,14 +179,14 @@ const store = new Vuex.Store({
         }
       });
     },
-    loadProfileOverview({ commit }) {
-      return axios.get(`${process.env.API_URL}/users/me`, {
+    loadUsersFromAPI({ commit }) {
+      return axios.get(`${process.env.API_URL}/users`, {
         headers: {
           'x-auth': store.getters.getToken,
         },
-      }).then((user) => {
-        commit('setUserDetails', { userData: user.data });
-        return user;
+      }).then((response) => {
+        commit('setUserList', { usersData: response.data.users });
+        return response;
       }).catch((e) => {
         if (e.response.status === 401) {
           router.push({ name: 'Auth' });
@@ -154,7 +196,7 @@ const store = new Vuex.Store({
     newCategory({ commit, dispatch }, { categoryName }) {
       return axios({
         method: 'POST',
-        url: `${process.env.API_URL}/categories`,
+        url: `${process.env.API_URL}/${store.getters.getSelectedGroup}/categories`,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         headers: {
@@ -168,10 +210,10 @@ const store = new Vuex.Store({
         return res;
       });
     },
-    newTodo({ commit, dispatch }, { task, completeByTime, categoryId, categoryName }) {
+    newTodo({ commit, dispatch }, { task, completeByTime, categoryId }) {
       axios({
         method: 'POST',
-        url: `${process.env.API_URL}/todos`,
+        url: `${process.env.API_URL}/${store.getters.getSelectedGroup}/${categoryId}/todos`,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
         headers: {
@@ -180,8 +222,6 @@ const store = new Vuex.Store({
         data: {
           task,
           completeByTime,
-          _category: categoryId,
-          categoryName,
         },
       }).then((res) => {
         dispatch('loadTodosFromAPI');
@@ -204,23 +244,117 @@ const store = new Vuex.Store({
         },
       }).then(res => res);
     },
+    addMemberToGroup({ commit, dispatch }, { memberId }) {
+      return axios({
+        method: 'PATCH',
+        url: `${process.env.API_URL}/groups/addmember/${store.getters.getSelectedGroup}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+        data: {
+          userIdToAdd: memberId,
+        },
+      }).then((res) => {
+        commit('addMemberToGroup', { memberId });
+        return res;
+      });
+    },
+    removeMemberFromGroup({ commit, dispatch }, { memberId }) {
+      return axios({
+        method: 'PATCH',
+        url: `${process.env.API_URL}/groups/removemember/${store.getters.getSelectedGroup}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+        data: {
+          userIdToRemove: memberId,
+        },
+      }).then((res) => {
+        commit('removeMemberFromGroup', { memberId });
+        return res;
+      });
+    },
+    deleteGroup({ commit }, { groupId }) {
+      return axios({
+        method: 'DELETE',
+        url: `${process.env.API_URL}/groups/${store.getters.getSelectedGroup}`,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+          'x-auth': store.getters.getToken,
+        },
+      }).then((res) => {
+        commit('removeGroup', { groupId });
+        return res;
+      });
+    },
     switchCompletedVisiblity({ commit }) {
       commit('switchCompletedVisiblity');
     },
     switchLanguage({ commit }, lang) {
       commit('switchLanguage', lang);
     },
+    openSideMenu({ commit }) {
+      commit('toggleSideMenu');
+    },
+    forceCloseSidemenu({ commit }) {
+      commit('closeSideMenu');
+    },
   },
   mutations: {
+    toggleSideMenu(state) {
+      state.openSideMenu = !state.openSideMenu;
+    },
+    closeSideMenu(state) {
+      state.openSideMenu = false;
+    },
     switchCompletedVisiblity(state) {
       state.userLoggedIn.hideCompleted = !state.userLoggedIn.hideCompleted;
     },
     switchLanguage(state, lang) {
       state.language = lang;
     },
+    removeGroup(state, { groupId }) {
+      /* eslint no-restricted-syntax: 0 */
+      /* eslint guard-for-in: 0 */
+      state.groups.filter(group => group._id !== groupId);
+      for (const key in state.userLoggedIn.selectedGroup) {
+        state.userLoggedIn.selectedGroup[key] = null;
+      }
+    },
+    removeGroupSelection(state) {
+      state.userLoggedIn.selectedGroup = null;
+      state.categories = [];
+      state.todos = [];
+    },
+    addGroup(state, { group }) {
+      state.groups.push(group);
+    },
+    addMemberToGroup(state, { memberId }) {
+      state.userLoggedIn.selectedGroup.members.push(memberId);
+    },
+    removeMemberFromGroup(state, { memberId }) {
+      state.userLoggedIn.selectedGroup.members =
+        state.userLoggedIn.selectedGroup.members.filter(user => user !== memberId);
+    },
+    currentlySelectedGroup(state, { groupId }) {
+      state.userLoggedIn.selectedGroup = groupId;
+    },
+    setGroups(state, { groups }) {
+      state.groups = [];
+      groups.forEach(group => state.groups.push(group));
+    },
     setTodoList(state, { todosData }) {
       state.todos = [];
       todosData.forEach(todo => state.todos.push(todo));
+    },
+    setUserList(state, { usersData }) {
+      state.users = [];
+      usersData.forEach(user => state.users.push(user));
     },
     setUserDetails(state, { userData }) {
       state.userDetails = userData;
@@ -230,6 +364,7 @@ const store = new Vuex.Store({
       categoriesData.forEach(category => state.categories.push(category));
     },
     loginSuccess(state, userData) {
+      state.userLoggedIn._id = userData._id;
       state.userLoggedIn.token = userData.token;
       state.userLoggedIn.username = userData.username;
       state.userLoggedIn.email = userData.email;
@@ -239,12 +374,17 @@ const store = new Vuex.Store({
     logoutSuccess(state) {
       state.todos = [];
       state.categories = [];
+      state.groups = [];
       state.userDetails = null;
       state.userLoggedIn.hideCompleted = false;
       state.userLoggedIn.isLoggedIn = false;
       state.userLoggedIn.username = null;
       state.userLoggedIn.displayName = null;
       state.userLoggedIn.email = null;
+      state.userLoggedIn.selectedGroup = null;
+      // for (const key in state.userLoggedIn.selectedGroup) {
+      //   state.userLoggedIn.selectedGroup[key] = null;
+      // }
     },
   },
   getters: {
@@ -253,12 +393,22 @@ const store = new Vuex.Store({
     allTodos: state => state.todos,
     allCategories: state => state.categories,
     hideCompleted: state => state.userLoggedIn.hideCompleted,
+    getUsers: state => state.users,
+    getSelfId: state => state.userLoggedIn._id,
     getEmail: state => state.userLoggedIn.email,
     getUsername: state => state.userLoggedIn.username,
     getDisplayName: state => state.userLoggedIn.displayName,
     getToken: state => state.userLoggedIn.token,
     getUserDetails: state => state.userDetails,
     getLanguage: state => state.language,
+    getGroups: state => state.groups,
+    getSelectedGroup: state => state.userLoggedIn.selectedGroup._id,
+    getSelectedGroupObject: state => state.userLoggedIn.selectedGroup,
+    getUsersNotInGroup: (state, getters) => state.users.filter(user =>
+      getters.getSelectedGroupObject.members.indexOf(user._id) === -1),
+    getUsersInGroup: (state, getters) => state.users.filter(user =>
+      getters.getSelectedGroupObject.members.indexOf(user._id) >= 0),
+    openSideMenu: state => state.openSideMenu,
   },
 });
 

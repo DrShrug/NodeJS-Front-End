@@ -28,10 +28,13 @@
       </div>
     </div>
     <!-- Todos -->
-    <TodoCategory :key="category._id" v-for="category in allCategories" 
-                  :category="category" 
-                  :todos="allTodos.filter(todo => todo._category === category._id)" />
-    
+    <div>
+      <transition-group name="list" mode="out-in" tag="div">
+        <TodoCategory :key="category._id" v-for="category in allCategories" 
+                      :category="category" 
+                      :todos="allTodos.filter(todo => todo._category === category._id)" />
+      </transition-group>
+    </div>
     <!-- Footer -->
     <div class="boxSetMargin bottom-rounded-border">
       Nothing to see here
@@ -62,13 +65,18 @@ export default {
   },
   data() {
     return {
+      idToAdd: '',
       completedHidden: false,
       reloadDataInProgress: false,
     };
   },
   created() {
-    this.$store.dispatch('loadCategoriesFromAPI');
-    this.$store.dispatch('loadTodosFromAPI');
+    if (this.$store.getters.getSelectedGroupObject) {
+      this.$store.dispatch('loadCategoriesFromAPI');
+      this.$store.dispatch('loadTodosFromAPI');
+    } else {
+      this.$router.push('/groups');
+    }
   },
   computed: {
     allTodos() {
@@ -163,7 +171,9 @@ export default {
 .noborder {
   border: none;
 }
-
+.list-leave-active {
+  opacity: 0;
+}
 .vdp-datepicker div input {
   -moz-appearance: none;
   -webkit-appearance: none;
