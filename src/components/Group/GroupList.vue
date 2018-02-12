@@ -11,6 +11,7 @@
           </div>
           <hr class="group-hr">
           <input type="button" value="Create group" class="button is-success" @click="$modal.show('createGroup')">
+          <input type="button" value="Logout" class="button is-danger" @click="logout">
         </div>
       </div>
     </section>
@@ -44,6 +45,11 @@ export default {
         if (this.$store.getters.getSelectedGroup) {
           this.$router.push('/todo');
         }
+      });
+    },
+    logout() {
+      this.$store.dispatch('userLogout').then(() => {
+        this.$router.push('/');
       });
     },
   },
