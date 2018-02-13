@@ -80,6 +80,7 @@ export default {
             title: 'Success',
             text: `User ${JSON.parse(res.request.response).username} has been added to the group`,
           });
+          this.$socket.emit('groupChanges');
         }
       });
     },

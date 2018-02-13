@@ -13,6 +13,9 @@
 </template>
 
 <script>
+  /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
+  /* eslint max-len: 0 */
+
   import createTodoModal from '@/components/TodoApp/Modals/CreateTodo';
   import createCategoryModal from '@/components/TodoApp/Modals/CreateCategory';
   import createGroupModal from '@/components/Group/CreateGroup';
@@ -32,6 +35,19 @@
       deleteTodoModal,
       deleteCategoryModal,
       deleteGroupModal,
+    },
+    sockets: {
+      // If user is kicked from group while browsing, redirect to group list
+      kickedUser({ memberId, groupId }) {
+        if (this.$store.getters.getSelectedGroupObject._id === groupId && this.$store.getters.getSelfId === memberId) {
+          this.$router.push('/groups');
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'You have been removed from the group',
+          });
+        }
+      },
     },
   };
 </script>

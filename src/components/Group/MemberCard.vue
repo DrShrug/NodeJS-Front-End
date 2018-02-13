@@ -46,6 +46,10 @@ export default {
             title: 'Success',
             text: `User ${JSON.parse(res.request.response).username} has been removed`,
           });
+          this.$socket.emit('kickedUser', {
+            memberId: this.user._id,
+            groupId: this.$store.getters.getSelectedGroupObject._id,
+          });
         }
       });
     },

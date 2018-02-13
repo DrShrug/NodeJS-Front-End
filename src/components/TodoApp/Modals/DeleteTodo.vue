@@ -52,6 +52,7 @@ export default {
           text: 'Todo has been deleted',
         });
         this.$modal.hide('deleteTodo');
+        this.$socket.emit('todoChanges');
       }).catch(() => {
         this.$notify({
           type: 'error',

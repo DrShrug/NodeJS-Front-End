@@ -2,7 +2,7 @@
   <div>
     <navbar></navbar>
     <sidemenu />
-    <div>test</div>
+    <button class="button" @click="emit">Click</button>
   </div>
 </template>
 
@@ -20,8 +20,16 @@ export default {
     };
   },
   methods: {
-    closeModal() {
-      this.$modal.hide('createCategory');
+    emit() {
+      this.$socket.emit('test', { data: 'Yes' });
+    },
+  },
+  sockets: {
+    connect() {
+      alert('connected to server');
+    },
+    new(data) {
+      alert(data.data);
     },
   },
 };

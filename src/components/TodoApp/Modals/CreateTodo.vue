@@ -90,6 +90,7 @@ export default {
             text: 'Todo has been added',
           });
           this.$modal.hide('createTodo');
+          this.$socket.emit('todoChanges');
         }).catch(() => {
           this.$notify({
             type: 'error',

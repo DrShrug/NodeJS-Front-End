@@ -16,7 +16,7 @@
       </div>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-success" @click="createNewCategory">{{ $t('btn_addGr') }}</button>
+      <button class="button is-success" @click="createNewGroup">{{ $t('btn_addGr') }}</button>
       <button class="button" @click="closeModal">{{ $t('cancel') }}</button>
     </footer>
   </modalComp>
@@ -50,7 +50,7 @@ export default {
     closeModal() {
       this.$modal.hide('createGroup');
     },
-    createNewCategory() {
+    createNewGroup() {
       if (this.newGroupName !== '') {
         this.$store.dispatch('createGroup', { groupName: this.newGroupName }).then(() => {
           this.$notify({
@@ -58,7 +58,7 @@ export default {
             title: 'Success',
             text: 'Group has been created',
           });
-          this.$store.dispatch('getGroups');
+          this.$socket.emit('groupChanges');
           this.$modal.hide('createGroup');
         }).catch(() => {
           this.$notify({

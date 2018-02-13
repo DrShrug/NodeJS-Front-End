@@ -59,9 +59,6 @@ export default {
     Sidemenu,
     RemoveMember,
   },
-  data: () => ({
-    userSelected: null,
-  }),
   mounted() {
     this.$store.dispatch('loadUsersFromAPI').then((res) => {
       if (res.status !== 200) {
@@ -72,29 +69,6 @@ export default {
         });
       }
     });
-  },
-  methods: {
-    setUser(user) {
-      this.userSelected = user;
-    },
-    addUserToGroup() {
-      this.$store.dispatch('addMemberToGroup', { memberId: this.userSelected._id }).then((res) => {
-        this.userSelected = null;
-        if (res.status !== 200) {
-          this.$notify({
-            type: 'error',
-            title: 'Error',
-            text: 'Error adding user to group',
-          });
-        } else {
-          this.$notify({
-            type: 'success',
-            title: 'Success',
-            text: `User ${JSON.parse(res.request.response).username} has been added to the group`,
-          });
-        }
-      });
-    },
   },
 };
 </script>

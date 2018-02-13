@@ -39,6 +39,11 @@ export default {
       }
     });
   },
+  sockets: {
+    groupChanges() {
+      this.$store.dispatch('getGroups');
+    },
+  },
   methods: {
     selectGroup(group) {
       this.$store.dispatch('setGroup', { groupId: group }).then(() => {

@@ -7,12 +7,14 @@ import VModal from 'vue-js-modal';
 import VueI18n from 'vue-i18n';
 import Buefy from 'buefy';
 import 'buefy/lib/buefy.css';
+import VueSocketio from 'vue-socket.io';
 import App from './App';
 import router from './router';
 import store from './store';
 
 Vue.set(Vue.prototype, '_', _);
 Vue.use(Buefy);
+Vue.use(VueSocketio, process.env.API_URL);
 Vue.use(Notifications);
 Vue.use(VueI18n);
 Vue.use(VModal, { componentName: 'modalComp' });
