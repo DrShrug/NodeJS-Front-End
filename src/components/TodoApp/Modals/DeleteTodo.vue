@@ -45,14 +45,17 @@ export default {
       this.idToDelete = event.params.toDelete;
     },
     deleteTodo() {
-      this.$store.dispatch('deleteTodo', this.idToDelete).then(() => {
+      this.$store.dispatch('deleteTodo', this.idToDelete).then((res) => {
         this.$notify({
           type: 'success',
           title: 'Success',
           text: 'Todo has been deleted',
         });
         this.$modal.hide('deleteTodo');
-        this.$socket.emit('todoChanges');
+        this.$socket.emit('todoChanges', {
+          user: this.$store.getters.getUsername,
+          action: `has deleted a todo "${res.data.todo.task}"`,
+        });
       }).catch(() => {
         this.$notify({
           type: 'error',

@@ -48,13 +48,18 @@ export default {
       this.idToDelete = event.params.idToDelete;
     },
     deleteCategory() {
-      this.$store.dispatch('deleteCategory', this.idToDelete).then(() => {
+      this.$store.dispatch('deleteCategory', this.idToDelete).then((res) => {
         this.$notify({
           type: 'success',
           title: 'Success',
           text: 'Category has been deleted',
         });
         this.$modal.hide('deleteCategory');
+        console.log(res.data);
+        this.$socket.emit('categoryChanges', {
+          user: this.$store.getters.getUsername,
+          action: `has deleted a category "${res.data.category.categoryName}"`,
+        });
       }).catch(() => {
         this.$notify({
           type: 'error',

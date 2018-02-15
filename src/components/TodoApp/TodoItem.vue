@@ -116,7 +116,10 @@ export default {
             title: 'Success',
             text: 'Todo has been modified',
           });
-          this.$socket.emit('todoChanges');
+          this.$socket.emit('todoChanges', {
+            user: this.$store.getters.getUsername,
+            action: 'has modified a todo',
+          });
         } else {
           this.$notify({
             type: 'error',

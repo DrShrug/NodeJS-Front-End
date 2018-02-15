@@ -96,8 +96,21 @@ export default {
     },
   },
   sockets: {
-    todoChanges() {
+    todoChanges(notif) {
       this.getAllTodos();
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        text: `${notif.user} ${notif.action}`,
+      });
+    },
+    categoryChanges(notif) {
+      this.getAllCategories();
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        text: `${notif.user} ${notif.action}`,
+      });
     },
   },
   methods: {

@@ -52,13 +52,17 @@ export default {
     },
     createNewCategory() {
       if (this.newCategoryName !== '') {
-        this.$store.dispatch('newCategory', { categoryName: this.newCategoryName }).then(() => {
+        this.$store.dispatch('newCategory', { categoryName: this.newCategoryName }).then((res) => {
           this.$notify({
             type: 'success',
             title: 'Success',
             text: 'Category has been created',
           });
           this.$modal.hide('createCategory');
+          this.$socket.emit('categoryChanges', {
+            user: this.$store.getters.getUsername,
+            action: `has created a category "${res.data.categoryName}"`,
+          });
         }).catch(() => {
           this.$notify({
             type: 'error',

@@ -83,14 +83,17 @@ export default {
           task: this.taskToAdd,
           completeByTime: this.limitToAdd.getTime(),
           categoryId: this.categoryId,
-        }).then(() => {
+        }).then((res) => {
           this.$notify({
             type: 'success',
             title: 'Success',
             text: 'Todo has been added',
           });
           this.$modal.hide('createTodo');
-          this.$socket.emit('todoChanges');
+          this.$socket.emit('todoChanges', {
+            user: this.$store.getters.getUsername,
+            action: `has created a new todo "${res.data.task}"`,
+          });
         }).catch(() => {
           this.$notify({
             type: 'error',
