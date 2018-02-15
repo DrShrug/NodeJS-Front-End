@@ -67,6 +67,12 @@ export default {
       completeBeforeDate: this.todoObj.completeByTime,
     };
   },
+  watch: {
+    todoObj() {
+      this.taskText = this.todoObj.task;
+      this.completeBeforeDate = this.todoObj.completeByTime;
+    },
+  },
   computed: { // Most unused but keeping for future change's sake
     hideCompleted() {
       return this.$store.getters.hideCompleted;
@@ -109,6 +115,10 @@ export default {
             type: 'success',
             title: 'Success',
             text: 'Todo has been modified',
+          });
+          this.$socket.emit('todoChanges', {
+            user: this.$store.getters.getUsername,
+            action: 'has modified a todo',
           });
         } else {
           this.$notify({

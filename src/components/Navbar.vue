@@ -35,8 +35,8 @@
               <i class="fa fa-lg fa-github"></i>
             </span>
           </a>
-          <a class="navbar-item" href="/test">
-            Testing ground
+          <a class="navbar-item" href="/guide">
+            User Guide
           </a>
 
           <div class="navbar-item has-dropdown is-hoverable">

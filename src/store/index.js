@@ -211,7 +211,7 @@ const store = new Vuex.Store({
       });
     },
     newTodo({ commit, dispatch }, { task, completeByTime, categoryId }) {
-      axios({
+      return axios({
         method: 'POST',
         url: `${process.env.API_URL}/${store.getters.getSelectedGroup}/${categoryId}/todos`,
         contentType: 'application/json; charset=utf-8',

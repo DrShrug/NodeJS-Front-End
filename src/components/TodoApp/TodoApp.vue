@@ -72,8 +72,8 @@ export default {
   },
   created() {
     if (this.$store.getters.getSelectedGroupObject) {
-      this.$store.dispatch('loadCategoriesFromAPI');
-      this.$store.dispatch('loadTodosFromAPI');
+      this.getAllTodos();
+      this.getAllCategories();
     } else {
       this.$router.push('/groups');
     }
@@ -93,6 +93,24 @@ export default {
         return 'Hide completed tasks';
       }
       return 'Show completed tasks';
+    },
+  },
+  sockets: {
+    todoChanges(notif) {
+      this.getAllTodos();
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        text: `${notif.user} ${notif.action}`,
+      });
+    },
+    categoryChanges(notif) {
+      this.getAllCategories();
+      this.$notify({
+        type: 'success',
+        title: 'Success',
+        text: `${notif.user} ${notif.action}`,
+      });
     },
   },
   methods: {
@@ -115,21 +133,6 @@ export default {
             text: 'Something went wrong when fetching data',
           });
         }
-      });
-    },
-    addNewTodo(todo) {
-      this.modalAddIsActive = false;
-      this.$store.dispatch('newTodo', todo)
-      .then(() => {
-        this.taskToAdd = '';
-        this.limitToAdd = '';
-        this.$notify({
-          type: 'success',
-          title: 'Success',
-          text: 'Todo has been added',
-        });
-      }).catch(() => {
-        // console.log(e);
       });
     },
     getAllCategories() {

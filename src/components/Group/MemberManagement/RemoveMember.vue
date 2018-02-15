@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import MemberCard from '@/components/Group/MemberCard';
+import MemberCard from '@/components/Group/MemberManagement/MemberCard';
 
 export default {
   components: {

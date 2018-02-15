@@ -2,7 +2,9 @@
   <div>
     <navbar></navbar>
     <sidemenu />
-    <div>test</div>
+    <div>
+      Filler content
+    </div>
   </div>
 </template>
 
@@ -14,15 +16,5 @@ export default {
     navbar,
   },
   name: 'Testing',
-  data() {
-    return {
-      newCategoryName: '',
-    };
-  },
-  methods: {
-    closeModal() {
-      this.$modal.hide('createCategory');
-    },
-  },
 };
 </script>

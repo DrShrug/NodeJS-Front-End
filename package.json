@@ -30,6 +30,7 @@
     "vue-js-modal": "^1.3.9",
     "vue-notification": "^1.3.6",
     "vue-router": "^3.0.1",
+    "vue-socket.io": "^2.1.1-b",
     "vuejs-datepicker": "^0.9.22",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.4.2"
