@@ -50,7 +50,7 @@
 <script>
 import Navbar from '@/components/Navbar';
 import Sidemenu from '@/components/Sidemenu';
-import RemoveMember from '@/components/Group/RemoveMember';
+import RemoveMember from '@/components/Group/MemberManagement/RemoveMember';
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 export default {

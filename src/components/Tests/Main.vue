@@ -2,7 +2,9 @@
   <div>
     <navbar></navbar>
     <sidemenu />
-    <button class="button" @click="emit">Click</button>
+    <div>
+      Filler content
+    </div>
   </div>
 </template>
 
@@ -14,23 +16,5 @@ export default {
     navbar,
   },
   name: 'Testing',
-  data() {
-    return {
-      newCategoryName: '',
-    };
-  },
-  methods: {
-    emit() {
-      this.$socket.emit('test', { data: 'Yes' });
-    },
-  },
-  sockets: {
-    connect() {
-      alert('connected to server');
-    },
-    new(data) {
-      alert(data.data);
-    },
-  },
 };
 </script>

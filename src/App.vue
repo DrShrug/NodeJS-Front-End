@@ -8,7 +8,6 @@
     <deleteTodoModal />
     <deleteCategoryModal />
     <deleteGroupModal v-if="$store.getters.getSelectedGroupObject" />
-
   </div>
 </template>
 
@@ -63,7 +62,6 @@ html, body, #app, #page, #main-container {
   text-align: center;
   color: #2c3e50;
 }
-
 .sidemenu-relative {
   position: relative;
 }

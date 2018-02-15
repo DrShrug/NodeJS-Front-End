@@ -3,7 +3,7 @@
     <Navbar />
     <div class="sidemenu-relative">
       <Sidemenu ref="sidemenu" class="sidemenu" />
-      <div class="container box spacer is-shadowless sidemenu-relative">
+      <div class="container box spacer is-shadowless">
         <!-- Hero -->
         <section class="hero is-info welcome is-small">
           <div class="hero-body">

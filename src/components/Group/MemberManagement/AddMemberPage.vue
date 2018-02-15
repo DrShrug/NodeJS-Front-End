@@ -49,7 +49,7 @@
 <script>
 import Navbar from '@/components/Navbar';
 import Sidemenu from '@/components/Sidemenu';
-import AddMember from '@/components/Group/AddMember';
+import AddMember from '@/components/Group/MemberManagement/AddMember';
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */
 
 export default {
@@ -78,7 +78,7 @@ export default {
           this.$notify({
             type: 'success',
             title: 'Success',
-            text: `User ${JSON.parse(res.request.response).username} has been added to the group`,
+            text: `User "${JSON.parse(res.request.response).username}" has been added to the group`,
           });
           this.$socket.emit('groupChanges');
         }

@@ -6,8 +6,9 @@ import Overview from '@/components/Account/Overview/AccOverview';
 import Test from '@/components/Tests/Main';
 import Groups from '@/components/Group/GroupList';
 import GroupOverview from '@/components/Group/GroupOverview';
-import AddMemberGroup from '@/components/Group/AddMemberPage';
-import RemoveMember from '@/components/Group/RemoveMemberPage';
+import AddMemberGroup from '@/components/Group/MemberManagement/AddMemberPage';
+import RemoveMember from '@/components/Group/MemberManagement/RemoveMemberPage';
+import Guide from '@/components/Guide/GuidePage';
 import store from './../store';
 
 Vue.use(Router);
@@ -21,6 +22,14 @@ const router = new Router({
       component: Test,
       meta: {
         title: 'Testing page',
+      },
+    },
+    {
+      path: '/guide',
+      name: 'Guide',
+      component: Guide,
+      meta: {
+        title: 'Todo App - Guide',
       },
     },
     {

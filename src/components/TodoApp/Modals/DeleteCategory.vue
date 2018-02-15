@@ -55,7 +55,6 @@ export default {
           text: 'Category has been deleted',
         });
         this.$modal.hide('deleteCategory');
-        console.log(res.data);
         this.$socket.emit('categoryChanges', {
           user: this.$store.getters.getUsername,
           action: `has deleted a category "${res.data.category.categoryName}"`,
