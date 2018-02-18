@@ -66,7 +66,7 @@ export default {
       this.$modal.hide('deleteGroup');
     },
     confirmGroupDelete() {
-      this.$store.dispatch('deleteGroup', { groupId: this.$store.getters.getSelectedGroup }).then(() => {
+      this.$store.dispatch('deleteGroup', { groupId: this.$store.getters.getSelectedGroup }).then((res) => {
         this.$notify({
           type: 'success',
           title: 'Success',
@@ -74,6 +74,13 @@ export default {
         });
         this.$modal.hide('deleteGroup');
         this.$router.push('/groups');
+        this.$socket.emit('groupDeleted', res.data.group);
+      }).catch(() => {
+        this.$notify({
+          type: 'error',
+          title: 'Error',
+          text: 'You do not have permission to delete the group',
+        });
       });
     },
   },

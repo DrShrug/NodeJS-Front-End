@@ -47,6 +47,19 @@
           });
         }
       },
+
+      // Called when a group has been deleted
+      groupDeleted(group) {
+        if (group._id === this.$store.getters.getSelectedGroupObject._id) {
+          this.$router.push('/groups');
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: 'The currently selected group has been deleted',
+          });
+        }
+      },
+  
     },
   };
 </script>

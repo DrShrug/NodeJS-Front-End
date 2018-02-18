@@ -49,7 +49,7 @@ export default {
   mounted() {
     this.$store.dispatch('removeGroupSelection');
     this.$store.dispatch('getGroups').then((res) => {
-      if (res.response.status !== 200) {
+      if (res.status !== 200) {
         this.$router.push('/');
       }
     });
