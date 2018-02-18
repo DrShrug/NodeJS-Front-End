@@ -1,9 +1,9 @@
 <template>
   <section>
-    <b-field label="Find a name">
+    <b-field :label="$t('search_label')">
         <b-autocomplete
           v-model="username"
-          placeholder="Find by username"
+          :placeholder="$t('search_placeholder')"
           :keep-first="false"
           :open-on-focus="true"
           :data="userFormat"
@@ -31,6 +31,19 @@
     </b-field>
   </section>
 </template>
+
+<i18n>
+{
+  "en": {
+    "search_label": "Find a user by their username",
+    "search_placeholder": "Search by username"
+  },
+  "fr": {
+    "search_label": "Trouver un utilisateur par son nom d'utilisateur",
+    "search_placeholder": "Recherche par nom d'utilisateur"
+  }
+}
+</i18n>
 
 <script>
 /* eslint no-underscore-dangle: ["error", { "allow": ["_id"] }] */

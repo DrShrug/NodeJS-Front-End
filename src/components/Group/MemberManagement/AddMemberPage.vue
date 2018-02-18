@@ -11,7 +11,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-list-ul"></i>
                 </span>
-                <span>Todo App</span>
+                <span>{{ $t('todo_app') }}</span>
               </a>
             </li>
             <li>
@@ -19,7 +19,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-users"></i>
                 </span>
-                <span>Group</span>
+                <span>{{ $t('group') }}</span>
               </a>
             </li>
             <li class="is-active">
@@ -27,7 +27,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-user-plus"></i>
                 </span>
-                <span>Add Members</span>
+                <span>{{ $t('add_members') }}</span>
               </a>
             </li>
           </ul>
@@ -35,16 +35,33 @@
         
         <section class="info-tiles box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Add Members</p>
+            <p class="has-text-grey-dark is-size-4">{{ $t('add_members') }}</p>
             <hr class="navbar-divider half-size">
           </div>
           <AddMember @setUserToAdd="setUser" />
-          <button class="btn-spacing button is-success" @click="addUserToGroup">Add User</button>
+          <button class="btn-spacing button is-success" @click="addUserToGroup">{{ $t('add_user') }}</button>
         </section>
       </div>
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "todo_app": "Todo App",
+    "group": "Group",
+    "add_members": "Add members",
+    "add_user": "Add user"
+  },
+  "fr": {
+    "todo_app": "Gestionnaire des tâches",
+    "group": "Groupe",
+    "add_members": "Ajout de membres",
+    "add_user": "Ajouter utilisateur"
+  }
+}
+</i18n>
 
 <script>
 import Navbar from '@/components/Navbar';

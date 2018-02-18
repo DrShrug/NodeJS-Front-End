@@ -9,7 +9,7 @@
           <section class="hero is-info welcome is-small">
             <div class="hero-body">
               <h1 class="title">
-                User Guide
+                {{ $t('header') }}
               </h1>
             </div>
           </section>
@@ -23,28 +23,28 @@
 
         <div class="column is-2 side-nav">
           <aside class="menu">
-            <p class="menu-label">General</p>
+            <p class="menu-label">{{ $t('general') }}</p>
             <ul class="menu-list">
               <li>
-                <a :class="{'is-active':isSelected('menu-groups')}" @click="scrollTo('groups')">Groups</a>
+                <a :class="{'is-active':isSelected('menu-groups')}" @click="scrollTo('groups')">{{ $t('groups') }}</a>
               </li>
             </ul>
-            <p class="menu-label">Todo App</p>
+            <p class="menu-label">{{ $t('todo') }}</p>
             <ul class="menu-list">
               <li>
-                <a :class="{'is-active':isSelected('menu-category')}" @click="scrollTo('category')">Categories</a>
+                <a :class="{'is-active':isSelected('menu-category')}" @click="scrollTo('category')">{{ $t('categories') }}</a>
               </li>
               <li>
-                <a :class="{'is-active':isSelected('menu-todo')}" @click="scrollTo('todo')">Todos</a>
+                <a :class="{'is-active':isSelected('menu-todo')}" @click="scrollTo('todo')">{{ $t('todos') }}</a>
               </li>
             </ul>
-            <p class="menu-label">Member Management</p>
+            <p class="menu-label">{{ $t('management') }}</p>
             <ul class="menu-list">
               <li>
-                <a :class="{'is-active':isSelected('menu-addmember')}" @click="scrollTo('addmember')">Add a member</a>
+                <a :class="{'is-active':isSelected('menu-addmember')}" @click="scrollTo('addmember')">{{ $t('add_user') }}</a>
               </li>
               <li>
-                <a :class="{'is-active':isSelected('menu-removemember')}" @click="scrollTo('removemember')">Removing a member</a>
+                <a :class="{'is-active':isSelected('menu-removemember')}" @click="scrollTo('removemember')">{{ $t('remove_user') }}</a>
               </li>
             </ul>
           </aside>
@@ -54,6 +54,33 @@
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "header": "User Guide",
+    "general": "General",
+    "groups": "Groups",
+    "todo": "Todo App",
+    "categories": "Categories",
+    "todos": "Todos",
+    "management": "Members management",
+    "add_user": "Adding a member",
+    "remove_user": "Removing a member"
+  },
+  "fr": {
+    "header": "Guide d'utilisation",
+    "general": "General",
+    "groups": "Groupes",
+    "todo": "Application de gestion",
+    "categories": "Catégories",
+    "todos": "Tâches",
+    "management": "Gestion des membres du groupe",
+    "add_user": "Ajouter des membres",
+    "remove_user": "Retirer des membres"
+  }
+}
+</i18n>
 
 <script>
 import Category from '@/components/Guide/Guide_Category';

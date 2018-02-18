@@ -47,11 +47,15 @@
 {
   "en": {
     "btn_addTodo": "Add todo",
-    "btn_addCat": "Add category"
+    "btn_addCat": "Add category",
+    "hide_completed": "Hide completed tasks",
+    "show_completed": "Show completed tasks"
   },
   "fr": {
     "btn_addTodo": "Ajouter une tâche",
-    "btn_addCat": "Ajouter une catégorie"
+    "btn_addCat": "Ajouter une catégorie",
+    "hide_completed": "Masquer les tâches complétées",
+    "show_completed": "Afficher les tâches complétées"
   }
 }
 </i18n>
@@ -90,9 +94,9 @@ export default {
     },
     toggleMessage() {
       if (!this.completedVisibility) {
-        return 'Hide completed tasks';
+        return this.$t('hide_completed');
       }
-      return 'Show completed tasks';
+      return this.$t('show_completed');
     },
   },
   sockets: {

@@ -3,7 +3,7 @@
     <div class="slideout-menu">
       
       <div class="header-menu">
-        <div class="slideout-menu-item">Dashboard</div>
+        <div class="slideout-menu-item">{{ $t('dashboard') }}</div>
         <div class="slideout-menu-item flex-container">
           <figure class="image is-96x96">
             <img class="round-image" src="https://cdn.discordapp.com/attachments/230447861043560448/412321950040326155/doot_transparent.png">
@@ -23,45 +23,68 @@
             <span class="icon is-pulled-left">
               <i class="fa fa-users" aria-hidden="true" />
             </span>
-            Manage group
+            {{ $t('manage_dropdown') }}
           </li>
           <ul class="submenu">
             <li class="submenu-item" @click="$router.push('/group/overview')">
               <span class="icon is-pulled-left">
                 <i class="fa fa-clipboard"></i>
               </span>
-              Group overview
+              {{ $t('overview') }}
             </li>
             <li class="submenu-item" @click="$router.push('/group/addMember')">
               <span class="icon is-pulled-left">
               <i class="fa fa-user-plus" aria-hidden="true" />
             </span>
-              Add member
+              {{ $t('add_member') }}
             </li>
             <li class="submenu-item" @click="$router.push('/group/removeMember')">
               <span class="icon is-pulled-left">
                 <i class="fa fa-user-times" aria-hidden="true" />
               </span>
-              Remove member
+              {{ $t('remove_member') }}
             </li>
             <li class="submenu-item" @click="$modal.show('deleteGroup')">
               <span class="icon is-pulled-left">
                 <i class="fa fa-trash" aria-hidden="true" />
               </span>
-              Delete group
+              {{ $t('delete_group') }}
             </li>
           </ul>
           <li class="slideout-menu-link">
             <span class="icon is-pulled-left">
               <i class="fa fa-cog" aria-hidden="true" />
             </span>
-            Other thing
+            {{ $t('other') }}
           </li>
         </ul>
       </div>
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "dashboard": "Dashboard",
+    "manage_dropdown": "Manage group",
+    "overview": "Group overview",
+    "add_member": "Add member",
+    "remove_member": "Remove member",
+    "delete_group": "Delete group",
+    "other": "Other thing"
+  },
+  "fr": {
+    "dashboard": "Tableau de bord",
+    "manage_dropdown": "Gestion du groupe",
+    "overview": "Aperçu du groupe",
+    "add_member": "Ajout de membre",
+    "remove_member": "Retirer des membres",
+    "delete_group": "Supression du groupe",
+    "other": "Autre"
+  }
+}
+</i18n>
 
 <script>
 export default {

@@ -17,11 +17,22 @@
         <span class="icon">
           <i class="fa fa-user" aria-hidden="true"></i>
         </span>
-        {{ group.members.length }} member(s)
+        {{ group.members.length }} {{ $t('members') }}
       </p>
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "members": "members(s)"
+  },
+  "fr": {
+    "members": "membre(s)"
+  }
+}
+</i18n>
 
 <script>
 export default {

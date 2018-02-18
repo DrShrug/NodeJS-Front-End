@@ -12,7 +12,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-list-ul"></i>
                 </span>
-                <span>Todo App</span>
+                <span>{{ $t('todo_app') }}</span>
               </a>
             </li>
             <li>
@@ -20,7 +20,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-users"></i>
                 </span>
-                <span>Group</span>
+                <span>{{ $t('group') }}</span>
               </a>
             </li>
             <li class="is-active">
@@ -28,7 +28,7 @@
                 <span class="icon is-small">
                   <i class="fa fa-user-plus"></i>
                 </span>
-                <span>Remove Members</span>
+                <span>{{ $t('remove_members') }}</span>
               </a>
             </li>
           </ul>
@@ -36,7 +36,7 @@
         
         <section class="info-tiles box">
           <div class="tile-header container">
-            <p class="has-text-grey-dark is-size-4">Remove Members</p>
+            <p class="has-text-grey-dark is-size-4">{{ $t('remove_members') }}</p>
             <p class="has-text-grey is-size-6">{{ $store.getters.getSelectedGroupObject.groupName }}</p>
             <hr class="navbar-divider half-size">
           </div>
@@ -46,6 +46,21 @@
     </div>
   </div>
 </template>
+
+<i18n>
+{
+  "en": {
+    "todo_app": "Todo App",
+    "group": "Group",
+    "remove_members": "Remove members"
+  },
+  "fr": {
+    "todo_app": "Gestionnaire des tâches",
+    "group": "Groupe",
+    "remove_members": "Retirer des membres"
+  }
+}
+</i18n>
 
 <script>
 import Navbar from '@/components/Navbar';

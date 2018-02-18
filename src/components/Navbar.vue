@@ -36,7 +36,7 @@
             </span>
           </a>
           <a class="navbar-item" href="/guide">
-            User Guide
+            {{ $t('guide') }}
           </a>
 
           <div class="navbar-item has-dropdown is-hoverable">
@@ -91,6 +91,7 @@
     "app_title": "Task manager",
     "switch_group": "Switch group",
     "language_switcher": "Languages",
+    "guide": "User guide",
     "account": "Account",
     "acc_signedin": "Signed in as",
     "acc_overview": "Overview",
@@ -101,6 +102,7 @@
     "app_title": "Gestionnaire des tâches",
     "switch_group": "Changer de groupe",
     "language_switcher": "Langues",
+    "guide": "Guide d'utilisateur",
     "account": "Compte",
     "acc_signedin": "Authentifié en tant que",
     "acc_overview": "Aperçu",
@@ -126,6 +128,9 @@ export default {
 </script>
 
 <style scoped>
+  a.navbar-link:hover {
+    color: #4286f4;
+  }
 .flag_fix {
   align-items: center;
   margin: 5px 0 0 0;
