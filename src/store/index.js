@@ -210,7 +210,7 @@ const store = new Vuex.Store({
         return res;
       });
     },
-    newTodo({ commit, dispatch }, { task, completeByTime, categoryId }) {
+    newTodo({ commit, dispatch }, { task, description, completeByTime, categoryId }) {
       return axios({
         method: 'POST',
         url: `${process.env.API_URL}/${store.getters.getSelectedGroup}/${categoryId}/todos`,
@@ -221,6 +221,7 @@ const store = new Vuex.Store({
         },
         data: {
           task,
+          description,
           completeByTime,
         },
       }).then((res) => {

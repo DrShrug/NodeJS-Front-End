@@ -2,13 +2,16 @@
   <div class="box smooth-in" :class="{ 'is-hidden' : checkConditionsToHide }">
     <div class="columns center-content">
 
-      <div class="column is-2">
-        <span class="icon is-pulled-left">
-          <i class="fa fa-bars" aria-hidden="true"></i>
-        </span>
+      <div class="column is-1">
+        <button class="button" @click="openDesc">
+          <span class="icon is-pulled-left">
+            <i class="fa fa-info" aria-hidden="true"></i>
+          </span>
+        </button>
+        
       </div>
 
-      <div class="column is-5" @click="editMode = true">
+      <div class="column is-6" @click="editMode = true">
         <p v-if="!editMode" :class="{ 'has-text-danger':checkIfLate, 'overline':todoObj.isCompleted }">{{ taskText }}</p> 
         <input type="text" class="input" :class="{ 'has-text-danger' : checkIfLate }" v-model="taskText" v-else @keyup.enter="sendChangesToServer" @blur="sendChangesToServer">
       </div>
@@ -97,6 +100,9 @@ export default {
     },
   },
   methods: {
+    openDesc() {
+      this.$modal.show('description', { desc: this.todoObj.description });
+    },
     setNewDateLimit(newTime) {
       this.todoObj.completeByTime = newTime;
       this.completeBeforeDate = newTime.getTime();

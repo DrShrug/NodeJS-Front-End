@@ -20,7 +20,13 @@
         <div class="columns field">
           <div class="column is-offset-3 is-6">
             <label class="label has-text-centered">{{ $t('label_limit') }}</label>
-            <DatePicker v-model="limitToAdd"></DatePicker>
+            <DatePicker v-model="limitToAdd" />
+          </div>
+        </div>
+        <div class="columns field">
+          <div class="column is-offset-1 is-10">
+            <label class="label has-text-centered">{{ $t('label_desc') }}</label>
+            <textarea class="textarea" placeholder="Description" v-model="desc" />
           </div>
         </div>
       </section>
@@ -39,6 +45,7 @@
     "label_task": "Task to complete",
     "label_category": "Set category",
     "label_limit": "Needs to be completed before",
+    "label_desc": "Description",
     "add_btn": "Add todo",
     "cancel": "Cancel"
   },
@@ -48,6 +55,7 @@
     "label_task": "Tâche à completer",
     "label_category": "Catégorie de la tâche",
     "label_limit": "À compléter avant",
+    "label_desc": "Description",
     "add_btn": "Ajouter tâche",
     "cancel": "Annuler"
   }
@@ -70,7 +78,7 @@ export default {
       taskToAdd: '',
       limitToAdd: '',
       categoryId: '',
-      test: ['1'],
+      desc: '',
     };
   },
   methods: {
@@ -81,6 +89,7 @@ export default {
       if (this.taskToAdd !== '' && this.limitToAdd !== '' && this.categoryId !== '') {
         this.$store.dispatch('newTodo', {
           task: this.taskToAdd,
+          description: this.desc,
           completeByTime: this.limitToAdd.getTime(),
           categoryId: this.categoryId,
         }).then((res) => {
@@ -117,7 +126,7 @@ export default {
 </script>
 
 <style>
-.setHeight {
+/* .setHeight {
   min-height: 500px;
-}
+} */
 </style>

@@ -1,6 +1,7 @@
 <template>
   <div id="page">
     <Navbar />
+    <Description />
     <div class="sidemenu-relative">
       <Sidemenu ref="sidemenu" class="sidemenu" />
       <div id="main-container">
@@ -44,6 +45,7 @@
 import Navbar from '@/components/Navbar';
 import TodoApp from '@/components/TodoApp/TodoApp';
 import Sidemenu from '@/components/Sidemenu';
+import Description from '@/components/TodoApp/Modals/Description';
 
 export default {
   name: 'TodoPage',
@@ -51,6 +53,7 @@ export default {
     Navbar,
     TodoApp,
     Sidemenu,
+    Description,
   },
 };
 </script>
