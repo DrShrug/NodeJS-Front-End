@@ -98,6 +98,10 @@ export default {
             title: 'Success',
             text: 'Todo has been added',
           });
+          this.taskToAdd = '';
+          this.limitToAdd = '';
+          this.categoryId = '';
+          this.desc = '';
           this.$modal.hide('createTodo');
           this.$socket.emit('todoChanges', {
             user: this.$store.getters.getUsername,

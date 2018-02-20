@@ -88,7 +88,7 @@ const store = new Vuex.Store({
         return res;
       });
     },
-    createGroup({ commit }, { groupName }) {
+    createGroup({ commit }, { groupName, description }) {
       return axios({
         method: 'POST',
         url: `${process.env.API_URL}/groups`,
@@ -99,6 +99,7 @@ const store = new Vuex.Store({
         },
         data: {
           groupName,
+          description,
         },
       }).then((res) => {
         commit('addGroup', res.data);

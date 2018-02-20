@@ -17,14 +17,14 @@
 
   import createTodoModal from '@/components/TodoApp/Modals/CreateTodo';
   import createCategoryModal from '@/components/TodoApp/Modals/CreateCategory';
-  import createGroupModal from '@/components/Group/CreateGroup';
+  import createGroupModal from '@/components/Group/GroupManagement/CreateGroup';
   import deleteTodoModal from '@/components/TodoApp/Modals/DeleteTodo';
   import deleteCategoryModal from '@/components/TodoApp/Modals/DeleteCategory';
-  import deleteGroupModal from '@/components/Group/DeleteGroupModal';
+  import deleteGroupModal from '@/components/Group/GroupManagement/DeleteGroupModal';
   import 'font-awesome/css/font-awesome.css';
   import './assets/bulma.sass';
   
-
+  
   export default {
     name: 'app',
     components: {

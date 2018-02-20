@@ -35,7 +35,7 @@
 
 <script>
 /* eslint no-underscore-dangle: 0 */
-import Group from '@/components/Group/Group';
+import Group from '@/components/Group/GroupManagement/GroupCard';
 
 export default {
   components: {

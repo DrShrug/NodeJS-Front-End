@@ -66,7 +66,7 @@
                 {{ $store.getters.getUsername }}
               </div>
               <hr class="navbar-divider">
-              <a class="navbar-item" href="/account/overview">
+              <a class="navbar-item">
                 {{ $t('acc_overview') }}
               </a>
               <a class="navbar-item">

@@ -8,7 +8,7 @@
     <hr class="group-hr" />
     <div>
       <p class="has-text-grey has-text-left">
-        Group description
+        {{ group.description }}
       </p>
     </div>
     <hr class="group-hr" />

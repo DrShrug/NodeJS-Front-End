@@ -8,7 +8,16 @@
       <div class="field">
         <label class="label">{{ $t('labelname') }}</label>
         <p class="control is-expanded has-icons-left">
-          <input class="input" type="text" placeholder="Name" v-model="newGroupName">
+          <input class="input" type="text" :placeholder="$t('labelname')" v-model="newGroupName">
+          <span class="icon is-small is-left">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+          </span>
+        </p>
+      </div>
+      <div class="field">
+        <label class="label">{{ $t('labeldesc') }}</label>
+        <p class="control is-expanded has-icons-left">
+          <input class="input" type="text" :placeholder="$t('labeldesc')" v-model="newGroupDesc">
           <span class="icon is-small is-left">
             <i class="fa fa-tags" aria-hidden="true"></i>
           </span>
@@ -27,12 +36,14 @@
   "en": {
     "modal_title": "Create a new group",
     "labelname": "Group name",
+    "labeldesc": "Description",
     "btn_addGr": "Add group",
     "cancel": "Cancel"
   },
   "fr": {
     "modal_title": "Créer un nouveau groupe",
     "labelname": "Nom de groupe",
+    "labeldesc": "Description",
     "btn_addGr": "Ajouter groupe",
     "cancel": "Annuler"
   }
@@ -44,6 +55,7 @@ export default {
   data() {
     return {
       newGroupName: '',
+      newGroupDesc: '',
     };
   },
   methods: {
@@ -51,13 +63,18 @@ export default {
       this.$modal.hide('createGroup');
     },
     createNewGroup() {
-      if (this.newGroupName !== '') {
-        this.$store.dispatch('createGroup', { groupName: this.newGroupName }).then(() => {
+      if (this.newGroupName !== '' && this.newGroupDesc !== '') {
+        this.$store.dispatch('createGroup', {
+          groupName: this.newGroupName,
+          description: this.newGroupDesc,
+        }).then(() => {
           this.$notify({
             type: 'success',
             title: 'Success',
             text: 'Group has been created',
           });
+          this.newGroupName = '';
+          this.newGroupDesc = '';
           this.$socket.emit('groupChanges');
           this.$modal.hide('createGroup');
         }).catch(() => {

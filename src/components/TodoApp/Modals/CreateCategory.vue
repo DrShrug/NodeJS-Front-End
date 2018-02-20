@@ -58,6 +58,7 @@ export default {
             title: 'Success',
             text: 'Category has been created',
           });
+          this.newCategoryName = '';
           this.$modal.hide('createCategory');
           this.$socket.emit('categoryChanges', {
             user: this.$store.getters.getUsername,
