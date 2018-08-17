@@ -6,7 +6,7 @@
         <div class="slideout-menu-item">{{ $t('dashboard') }}</div>
         <div class="slideout-menu-item flex-container">
           <figure class="image is-96x96">
-            <img class="round-image" src="https://cdn.discordapp.com/attachments/230447861043560448/412321950040326155/doot_transparent.png">
+            <img class="round-image" src="https://png.icons8.com/ultraviolet/2x/person-male.png">
           </figure>
         </div>
         <div class="slideout-menu-item">
